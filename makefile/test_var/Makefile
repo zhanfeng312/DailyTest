@@ -1,6 +1,4 @@
-
 # 注释符
-#todo makefile 函数
 
 #foo = $(bar)
 #bar = $(ugh)
