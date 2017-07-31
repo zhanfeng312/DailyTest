@@ -123,14 +123,12 @@ int main(int argc, char* argv[])
 
 void *worker_thread()
 {
-	if (g_debug) 
-        puts("worker_thread start ...");
+	if (g_debug) puts("worker_thread start ...");
 	while (0 == g_system_done)
 	{
 		sleep(1);
 	}
-	if (g_debug)
-        puts("worker_thread end ...");
+	if (g_debug) puts("worker_thread end ...");
 	pthread_exit (NULL);
 }
 
