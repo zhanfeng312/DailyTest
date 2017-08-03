@@ -23,7 +23,7 @@
 #include <signal.h>
 
 
-#define PROG_NAME						"daemon"
+#define PROG_NAME   "daemon"
 
 
 

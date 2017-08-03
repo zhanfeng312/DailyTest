@@ -20,4 +20,4 @@ private:
 	string m_name;
 };
 
-#endif
+#endif //__TEST_H_
