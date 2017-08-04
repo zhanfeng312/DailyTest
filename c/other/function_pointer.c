@@ -3,28 +3,27 @@
 void func1();
 void func2();
 
-void (*fp)();
+void (*g_fp)() = NULL;
 
 int main(int argc, char *argv[]){
     
-	fp = func1;
-	(*fp)();
-	fp = func2;
-	(*fp)();
+	g_fp = func1;
+	(*g_fp)();
+    
+	g_fp = func2;
+	(*g_fp)();
 
 	getchar();
-	
-	double f = 0;
-	if (f == 0)
-		puts("fff");
 
 	return 0;
 }
 
 void func1(){
+    
 	printf("1\n");
 }
 
 void func2(){
+    
 	printf("2\n");
 }

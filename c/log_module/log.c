@@ -1,5 +1,4 @@
-#include <iostream>
-#include <cstdio>
+#include <stdio.h>
 
 #define PR(fmt, ...) \
 	do { \
