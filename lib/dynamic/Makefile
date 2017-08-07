@@ -7,10 +7,10 @@ LDFLAGS += -L.
 LIBS += -lmyhello
 
 $(target):	libmyhello.so test.o
-	gcc -o $(target) test.o $(LDFLAGS) $(LIBS)
+	gcc -o $@ test.o $(LDFLAGS) $(LIBS)
 
 libmyhello.so:	hello.c hello.h
-	gcc -o libmyhello.so hello.c $(CFLAGS)
+	gcc -o $@ $< $(CFLAGS)
     
 test.o: test.c
 	gcc -c $<
