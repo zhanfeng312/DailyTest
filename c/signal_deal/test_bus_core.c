@@ -19,18 +19,6 @@ int main(int argc, char **argv)
 
     printf("123\n");
 
-#if defined(__GNUC__)
-# if defined(__i386__)
-    /* Enable Alignment Checking on x86 */
-    __asm__("pushf\norl $0x40000,(%esp)\npopf");
-# elif defined(__x86_64__) 
-     /* Enable Alignment Checking on x86_64 */
-    __asm__("pushf\norl $0x40000,(%rsp)\npopf");
-# endif
-#endif
-    
-    printf("456\n");
-
     int *iptr = NULL;
     char *cptr = NULL;
     
