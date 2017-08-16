@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include "mylog.h"
 
 char g_buf[10] = {0};
 
@@ -14,11 +15,6 @@ static void test_handle_file()
 		puts("file not exist!");
 		return;
 	}
-    
-	/*while ((c = fgetc(fp)) != EOF)
-	{
-		printf("%c", c);
-	}*/
 	
 	while ((fgets(g_buf, sizeof(g_buf), fp)) != NULL){
 		printf("%s", g_buf);
@@ -30,7 +26,11 @@ static void test_handle_file()
 
 int main(int argc, char *argv[])
 {
+    fang_log("begin test\n");
+    
 	test_handle_file();
+
+    fang_log("after test\n");
 
 	return 0;
 }

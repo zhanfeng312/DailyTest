@@ -1,44 +1,25 @@
-<!--html学习链接：http://www.w3school.com.cn/-->
 <html>
 <head>
 	<title>js test</title>
 	<script language="JavaScript" type="text/javascript" charset="UTF-8">
-		function get_device()
-		{
-			qin.network.getDevice();
-		}
 		function get_net_type()
 		{
-			qin.network.getNetType("eth0");
-		}
-		function get_net_info()
-		{
-			qin.network.getNetInfo("eth0");
+			iSTB.network.get_nettype("eth0");
 		}
 		function get_mac()
 		{
-			qin.network.getMAC("eth0");
-		}
-		function get_phy_status()
-		{
-			qin.network.getPhyStatus("eth0");
+			iSTB.network.get_mac("eth0");
 		}
 		function get_net_status()
 		{
-			qin.network.getNetStatus("eth0");
-		}
-		function test_ping()
-		{
-			qin.network.ping("eth0", "www.baidu.com");
+			iSTB.network.getnetstatus("eth0");
 		}
     </script>
 </head>
 
 <body style="text-align:center;">
 	
-	<hr/><!--水平线-->
-	<a href="javascript:get_device()">get_device</a>
-	<br/>
+	<hr/>
 	
 	<a href="javascript:get_net_type()">get_net_type</a>
 	<br/>
@@ -46,13 +27,7 @@
 	<a href="javascript:get_mac()">get_mac</a>
 	<br/>
 	
-	<a href="javascript:get_phy_status()">get_phy_status</a>
-	<br/>
-	
 	<a href="javascript:get_net_status()">get_net_status</a>
-	<br/>
-	
-	<a href="javascript:test_ping()">test_ping_baidu</a>
 	<br/>
 	
 	<hr/>
