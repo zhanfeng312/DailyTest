@@ -15,3 +15,7 @@ sources := $(wildcard $(dir)/*.c)
 
 all:
 	@echo $(sources)
+
+.PHONY: clean
+clean:
+	-rm *.o

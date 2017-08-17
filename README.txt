@@ -1,2 +1,2 @@
 
-This is my code of work
+This is my duty code

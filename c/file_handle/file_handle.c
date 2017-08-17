@@ -9,7 +9,7 @@ static void test_handle_file()
 	int c;
 	const char *file_name = "b.txt";
 
-	fp = fopen(file_name, "a+");
+	fp = fopen(file_name, "r");
 
 	if (!fp){
 		puts("file not exist!");

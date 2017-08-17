@@ -1,30 +1,24 @@
 #include <stdio.h>
+#include <string.h>
 
 #define F1(R) #R
 #define F2(R) F1(R)
 #define A 192.168.51.100
 
-#define UDC_SERVER "http://192.168.51.100:8080"
-#define AB ff
-#define CD gg
+#define AB "ddsds"
+#define CD dfd
 
 int main (void){
-/*
-#if defined (AB) && defined(CD)
 
-    printf("F1(A) = %s\n", F1(A)); // -> 
-    printf("F2(A) = %s\n", F2(A)); // -> F1(192.168.51.100) -> "192.168.51.100"
+    if (strlen(F2(AB)) != 0 && strlen(F2(CD)) != 0)
+    {
+        #define UDC_USER AB
+        #define UDC_PWD CD
 
-	char buf[] = UDC_SERVER;
-	printf("%s\n", buf);
-#endif
-*/
-    #define f(a,b) a##b
-    #define g(a)  #a
-    #define h(a) g(a)
-    
-    printf("%s\n",h(f(1,2))); // g(12)  -> 12
-    printf("%s\n",g(f(1,2))); // f(1,2)
-    
+        printf("F1(A) = %s\n", F1(A)); // -> 
+        printf("F2(A) = %s\n", F2(A)); // -> F1(192.168.51.100) -> "192.168.51.100"
+        
+    	printf("%s:%s\n", "/data", "/data");
+    }
 	return 0;
 }
