@@ -1,24 +1,28 @@
 #include <stdio.h>
-#include <string.h>
 
 #define F1(R) #R
 #define F2(R) F1(R)
-#define A 192.168.51.100
 
-#define AB "ddsds"
-#define CD dfd
+#define A 192.168.51.100
+#define AB "http://192.168.51.100:8080"
+#define CD "tomcat"
+
 
 int main (void){
 
-    if (strlen(F2(AB)) != 0 && strlen(F2(CD)) != 0)
+    if (AB != NULL)
     {
-        #define UDC_USER AB
-        #define UDC_PWD CD
-
         printf("F1(A) = %s\n", F1(A)); // -> 
         printf("F2(A) = %s\n", F2(A)); // -> F1(192.168.51.100) -> "192.168.51.100"
-        
-    	printf("%s:%s\n", "/data", "/data");
+
+        char buf[100] = {0};
+    	snprintf(buf, sizeof (buf) - 1, AB"/sddc/dataCollect");
+
+        printf("%s\n", buf);
+    }
+    else
+    {
+        ;
     }
 	return 0;
 }
