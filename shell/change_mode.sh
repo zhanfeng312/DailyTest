@@ -7,6 +7,6 @@ if [ -x ${ISTC_CLI} ]; then
     echo -e "ip\nsetmode eth1 static\nsetmode vth1 static\nsetmode eth0 dhcp" >/tmp/change_mode
     ${ISTC_CLI} -S /tmp/change_mode
 else
-	echo "istc_cli not exists!"
+	echo "istc_cli is not exists or not be executable!"
     exit 1
 fi
