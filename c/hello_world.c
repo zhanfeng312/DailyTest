@@ -80,7 +80,7 @@ int main(int argc, char* argv[])
         		break;
             default:
                 usage();
-                return 0;
+                exit (1);
         }
 	}
 	argv += optind;
@@ -148,8 +148,6 @@ void usage()
 {
     fprintf(stderr, "-h: show help message\n");
     fprintf(stderr, "-g: open debug mode\n");
-    
-	exit (1);
 }
 
 static void sig_handle(int sig)
