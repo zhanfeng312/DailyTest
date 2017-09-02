@@ -25,8 +25,6 @@
 
 #define PROG_NAME   "daemon"
 
-
-
 void		usage();
 static void	sig_handle(int sig);
 int			prog_exit(int eno);
@@ -47,7 +45,7 @@ int		g_system_done = 0;
 //entry
 int main(int argc, char* argv[])
 {
-    //signal
+    //signal deal start
 	struct sigaction sa;
 	sa.sa_flags = 0;
 	
@@ -65,16 +63,17 @@ int main(int argc, char* argv[])
 	sigaction (SIGSTOP, &sa, NULL);
 	sa.sa_handler = sig_handle;
 	sigaction (SIGINT, &sa, NULL);
-
-    //parse cmd
-    int c;
+    //signal deal end
+    
+    //parse cmd start
+    int c = 0;
 	while ((c = getopt(argc, argv, "hd")) != EOF)
 	{
 		switch(c) 
         {
         	case 'h':
         		usage();
-        		break;
+        		exit (1);
         	case 'd':
         		g_debug = 1;
         		break;
@@ -83,10 +82,12 @@ int main(int argc, char* argv[])
                 exit (1);
         }
 	}
+    
 	argv += optind;
 	argc -= optind;
+    //parse cmd end
 
-    //fork
+    //fork start
 	if (0 == g_debug)
     {
         pid_t pid;
@@ -102,8 +103,9 @@ int main(int argc, char* argv[])
         }
         setsid ();
     }
+    //fork end
 
-    //thread
+    //thread start
     pthread_t tid_worker_thread;
 	pthread_t tid_event_thread;
 	pthread_create(&tid_worker_thread, NULL, worker_thread, NULL);
@@ -116,7 +118,8 @@ int main(int argc, char* argv[])
 
 	pthread_join(tid_worker_thread, NULL);
 	pthread_join(tid_event_thread, NULL);
-	
+    //thread end
+    
 	prog_exit(0);
 	return 0;
 }
