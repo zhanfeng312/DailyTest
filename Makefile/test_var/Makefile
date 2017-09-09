@@ -10,8 +10,8 @@
 #foo := a.o b.o c.o
 #bar := $(foo:.o=.c)
 
-dir = foo
-sources := $(wildcard $(dir)/*.c)
+#dir = foo
+#sources := $(wildcard $(dir)/*.c)
 
 all:
 	@echo $(sources)

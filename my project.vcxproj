@@ -99,8 +99,6 @@
   <ItemGroup>
     <ClCompile Include="c++\string\test_string.cpp" />
     <ClCompile Include="c++\Test.cpp" />
-    <ClCompile Include="c++_call_c\main.cpp" />
-    <ClCompile Include="c++_call_c\Test.c" />
     <ClCompile Include="c\file_handle\file_handle.c" />
     <ClCompile Include="c\function_pointer_handle\function_pointer.c" />
     <ClCompile Include="c\hello_world.c" />
@@ -111,13 +109,9 @@
     <ClCompile Include="c\lib_module\lib_so\test_libso.c" />
     <ClCompile Include="c\macro_handle\macro.c" />
     <ClCompile Include="c\other\test_gets_puts.c" />
-    <ClCompile Include="makefile\test_var\foo\1.c" />
-    <ClCompile Include="makefile\test_var\foo\2.c" />
-    <ClCompile Include="makefile\test_var\foo\3.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="c++\Test.h" />
-    <ClInclude Include="c++_call_c\Test.h" />
     <ClInclude Include="c\lib_module\lib_a\hello.h" />
     <ClInclude Include="c\lib_module\lib_so\hello.h" />
     <ClInclude Include="c\log_module\mylog.h" />

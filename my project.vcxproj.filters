@@ -15,19 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="c++\Test.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="c++\string\test_string.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="makefile\test_var\foo\3.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="makefile\test_var\foo\2.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="makefile\test_var\foo\1.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="c\hello_world.c">
@@ -60,10 +48,7 @@
     <ClCompile Include="c\macro_handle\macro.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="c++_call_c\main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="c++_call_c\Test.c">
+    <ClCompile Include="c++\Test.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -78,9 +63,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="c\lib_module\lib_a\hello.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="c++_call_c\Test.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
