@@ -64,31 +64,31 @@ int main(int argc, char* argv[])
 	sa.sa_handler = sig_handle;
 	sigaction (SIGINT, &sa, NULL);
     //signal deal end
-    
+	
     //parse cmd start
     int c = 0;
-	while ((c = getopt(argc, argv, "hd")) != EOF)
-	{
-		switch(c) 
+    while ((c = getopt(argc, argv, "hd")) != EOF)
+    {
+        switch(c)
         {
-        	case 'h':
-        		usage();
-        		exit (1);
-        	case 'd':
-        		g_debug = 1;
-        		break;
+            case 'h':
+                usage();
+                exit (1);
+            case 'd':
+                g_debug = 1;
+                break;
             default:
                 usage();
                 exit (1);
         }
-	}
+    }
     
-	argv += optind;
-	argc -= optind;
+    argv += optind;
+    argc -= optind;
     //parse cmd end
-
+    
     //fork start
-	if (0 == g_debug)
+    if (0 == g_debug)
     {
         pid_t pid;
         pid = fork();
