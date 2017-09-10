@@ -28,8 +28,8 @@
 void		usage();
 static void	sig_handle(int sig);
 int			prog_exit(int eno);
-void*		worker_thread();
-void*		event_thread();
+void*		worker_thread(void* arg);
+void*		event_thread(void* arg);
 
 
 
@@ -124,7 +124,7 @@ int main(int argc, char* argv[])
 	return 0;
 }
 
-void *worker_thread()
+void *worker_thread(void* arg)
 {
 	if (g_debug) puts("worker_thread start ...");
 	while (0 == g_system_done)
@@ -135,7 +135,7 @@ void *worker_thread()
 	pthread_exit (NULL);
 }
 
-void *event_thread()
+void *event_thread(void* arg)
 {
 	if (g_debug) puts("event_thread start ...");
 	while (0 == g_system_done)
