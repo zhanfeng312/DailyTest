@@ -1,0 +1,42 @@
+linux权限
+1.r 读
+2.w 写
+3.x 执行
+
+s t ?
+
+linux用户
+1.所有者
+2.所属组
+3.其他用户
+
+查看用户：
+	id user1
+用户添加
+	useradd -m user1
+用户删除
+	userdel -r user1
+设置密码：
+	passwd user1
+	
+用户与组：
+把用户添加到组
+gpasswd -a user1 root
+把用户从组删除
+gpasswd -d user1 root
+
+************************************************************
+
+设置用户对命令的执行权限 - visudo
+1.设置
+visudo
+user1 ALL=(ALL) /usr/sbin/useradd,/usr/sbin/userdel
+
+2.使用有密码sudo授权命令
+sudo useradd user2
+sudo userdel -r user2
+
+3.使用无密码的sudo授权命令
+设置：
+user1 ALL=(ALL) NOPASSWD: /usr/sbin/userdel
+sudo userdel -r user2
