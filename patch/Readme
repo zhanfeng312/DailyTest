@@ -1,0 +1,3 @@
+diff -Naur old new > a.patch
+
+patch -p0 < foo.patch

@@ -1,11 +1,11 @@
 #!/bin/bash
 
-my_add ()
+function my_add ()
 {
     return $(($1 + $2))
 }
 
-my_multiply ()
+function my_multiply ()
 {
     return $(($1 * $2))
 }
@@ -30,5 +30,5 @@ echo $?
 #var4=$(($var1 + $var2))
 #var4=$[$var1 + $var2]
 #var4=`expr $var1 \* $var2`
-#var4=`echo "$var1 * $var2" | bc` #把表达式传给bc
+#var4=`echo "$var1 * $var2" | bc`
 #echo ${var4}

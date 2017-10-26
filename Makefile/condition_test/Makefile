@@ -21,5 +21,5 @@ GCC_MAJOR_GT4 := $(shell expr $(GCC_MAJOR_VER) \> 4)
 all:
 	@for i in $(VRE); \
 	do \
-		echo "$$i "; \
+		echo $$i; \
 	done
