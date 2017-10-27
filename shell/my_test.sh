@@ -19,6 +19,10 @@ echo $?
 my_multiply ${var1} ${var2}
 echo $?
 
+i=1
+num=$(($i+1))
+echo $num
+
 # ()
 (
     #var3=`date`
