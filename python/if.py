@@ -1,14 +1,11 @@
 #!/usr/bin/python
-#filename if.py
 
-number = 23
-guess = int(raw_input('Enter an integer :'))
+print('if game start')
 
-if guess == number:
-	print '='
-elif guess < number:
-	print '<'
+guess = int(input("guess my number: "))
+
+if guess == 8:
+    print("congratulations")
 else:
-	print '>'
-	
-print 'Done'
+    print("no")
+print("the game over")

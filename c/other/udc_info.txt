@@ -1,7 +1,3 @@
-http://192.168.51.100:8080
+http://collect.gehua.net.cn:8080
 tomcat
 tomcat
-
-
-
-

@@ -3,13 +3,11 @@
 
 def printMax(a, b):
 	if a > b:
-		print 'maximum is', a
+		print ("maximum is", a)
 	else:
-		print 'maximum is', b
+		print ("maximum is", b)
 		
-printMax(2, 4)
-
-x = 5
-y = 7
+x = int(input("input first number: "))
+y = int(input("input second number: "))
 
 printMax(x, y)
