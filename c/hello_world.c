@@ -51,17 +51,13 @@ int main(int argc, char* argv[])
     
     sa.sa_handler = SIG_IGN;
     sigaction (SIGCHLD, &sa, NULL);/* WIFEXITED and WEXITSTATUS after system need SIGCHLD */
-    sa.sa_handler = SIG_IGN;
     sigaction (SIGPIPE, &sa, NULL);
+    
     sa.sa_handler = sig_handle;
     sigaction (SIGHUP, &sa, NULL);
-    sa.sa_handler = sig_handle;
     sigaction (SIGQUIT, &sa, NULL);
-    sa.sa_handler = sig_handle;
     sigaction (SIGTERM, &sa, NULL);/* killall */
-    sa.sa_handler = sig_handle;
     sigaction (SIGSTOP, &sa, NULL);
-    sa.sa_handler = sig_handle;
     sigaction (SIGINT, &sa, NULL);
     //signal deal end
     
@@ -86,24 +82,6 @@ int main(int argc, char* argv[])
     argv += optind;
     argc -= optind;
     //parse cmd end
-    
-    //fork start
-    if (0 == g_debug)
-    {
-        pid_t pid;
-        pid = fork();
-        if(pid > 0){
-            exit (0);
-        }else if (pid == 0){
-            printf("child process create success\n");
-        }
-        else{
-            printf ("could not daemon mode !\n");
-            exit (1);
-        }
-        setsid ();
-    }
-    //fork end
 
     //thread start
     pthread_t tid_worker_thread;
@@ -155,6 +133,7 @@ void usage()
 
 static void sig_handle(int sig)
 {
+    printf("%d\n", sig);
     switch (sig)
     {
         case SIGPIPE:
@@ -164,6 +143,8 @@ static void sig_handle(int sig)
             puts("");
             break;
         case SIGINT:
+            puts("ctrl+c clicked");
+            break;
         case SIGTERM:
         case SIGQUIT:
         case SIGSTOP:
