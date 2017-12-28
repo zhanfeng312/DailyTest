@@ -3,19 +3,16 @@
 #bar = $(ugh)
 #ugh = Huh?
 
-#x := foo
-#y := $(x) bar
-#x := later
+x := foo
+y := $(x) bar
+x := later
 
 #foo := a.o b.o c.o
 #bar := $(foo:.o=.c)
 
-#dir = foo
-#sources := $(wildcard $(dir)/*.c)
-
 all:
-	@echo $(sources)
+	@echo $(x)
 
 .PHONY: clean
 clean:
-	-rm *.o
+	rm -rf *.o
