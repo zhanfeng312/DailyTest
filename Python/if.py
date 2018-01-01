@@ -1,11 +1,12 @@
-#!/usr/bin/python
+score = int(input("请输入一个分数:"))
 
-print('if game start')
-
-guess = int(input("guess my number: "))
-
-if guess == 8:
-    print("congratulations")
+if score < 0 or score > 100:
+    print ('您的输入有误!')
+elif score >= 90 and score <= 100:
+    print ('A')
+elif score >= 75 and score < 90:
+    print ('B')
+elif score >= 60 and score < 75:
+    print ('C')
 else:
-    print("no")
-print("the game over")
+    print ('D')
