@@ -5,8 +5,10 @@
 int main (void)
 {
 	void *handle = NULL;
+	void(*p_handle)(void) = NULL;
+	char *error = NULL;
 	
-	handle = dlopen("libbrowser_javascript_network_v8.so", RTLD_LAZY);
+	handle = dlopen("libprint.so", RTLD_LAZY);
 	if (!handle)
 	{
 		fprintf(stderr, "%s\n", dlerror());
@@ -16,6 +18,13 @@ int main (void)
 	{
 		printf("%s\n", (char*)handle);
 	}
+	
+	p_handle = dlsym(handle, "print");
+	if ((error = dlerror()) != NULL)  {
+		fprintf (stderr, "%s\n", error);
+		exit(1);
+	}
+	(*p_handle)();
 	
 	dlclose(handle);
 	return 0;

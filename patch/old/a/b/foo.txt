@@ -1,2 +1,0 @@
-old_line_1
-old_line_2
