@@ -1,3 +1,0 @@
-http://collect.gehua.net.cn:8080
-tomcat
-tomcat
