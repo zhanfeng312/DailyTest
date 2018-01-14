@@ -1,10 +1,16 @@
-target = file.elf
+TARGET = test
 
 PWD=$(shell pwd)
-CFLAGS = -I $(PWD)/../log_module
+CFLAGS = -I $(PWD)/..
 
-$(target): file_handle.c
-	gcc $(CFLAGS) $^ -o $@
+SRCS = $(wildcard *.c)
 
+$(TARGET): $(SRCS)
+	$(CC) $(CFLAGS) $^ -o $@
+	
+.PHONY: run clean
+run:
+	@$(PWD)/$(TARGET)
+	
 clean:
-	rm $(target)
+	rm -rf $(TARGET)

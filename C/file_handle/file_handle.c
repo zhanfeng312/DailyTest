@@ -1,12 +1,10 @@
-#include <stdio.h>
-#include "mylog.h"
+#include "my_common.h"
 
 char g_buf[10] = {0};
 
 static void test_handle_file()
 {
 	FILE *fp = NULL;
-	int c;
 	const char *file_name = "b.txt";
 
 	fp = fopen(file_name, "r");
@@ -34,4 +32,3 @@ int main(int argc, char *argv[])
 
 	return 0;
 }
-

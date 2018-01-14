@@ -1,9 +1,9 @@
 #include <stdio.h>
 
-void func1();
-void func2();
+void func1(void);
+void func2(void);
 
-void (*g_fp)() = NULL;
+void (*g_fp)(void) = NULL;
 
 int main(int argc, char *argv[]){
     
@@ -18,12 +18,12 @@ int main(int argc, char *argv[]){
 	return 0;
 }
 
-void func1(){
+void func1(void){
     
 	printf("1\n");
 }
 
-void func2(){
+void func2(void){
     
 	printf("2\n");
 }

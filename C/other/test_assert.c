@@ -7,9 +7,7 @@ int main(int argc, char **argv) {
 
     char *p = NULL;
 
-    //assert(p != NULL);
-
-    ASSERT(p != NULL);
+    assert(p != NULL);
 
     return 0;
 }
