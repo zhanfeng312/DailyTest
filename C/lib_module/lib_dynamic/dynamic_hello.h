@@ -1,5 +1,5 @@
-#ifndef HELLO_H
-#define HELLO_H
+#ifndef DYNAMIC_HELLO_H
+#define DYNAMIC_HELLO_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -10,4 +10,4 @@ void hello(const char *name);
 #ifdef __cplusplus
 }
 #endif
-#endif //HELLO_H
+#endif //DYNAMIC_HELLO_H

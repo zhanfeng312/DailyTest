@@ -3,26 +3,19 @@
 #define F1(R) #R
 #define F2(R) F1(R)
 
-#define A 192.168.51.100
-#define AB "http://192.168.51.100:8080"
-#define CD "tomcat"
+#define A "192.168.51.100"
 
-
-int main (void){
-
-    if (AB != NULL)
+int main (int argc, char *argv[])
+{
+#ifndef _WIN32
+    printf("not win32 platform!\n");
+    if (A != NULL)
     {
         printf("F1(A) = %s\n", F1(A)); // -> 
         printf("F2(A) = %s\n", F2(A)); // -> F1(192.168.51.100) -> "192.168.51.100"
-
-        char buf[100] = {0};
-    	snprintf(buf, sizeof (buf) - 1, AB"/sddc/dataCollect");
-
-        printf("%s\n", buf);
     }
-    else
-    {
-        ;
-    }
+#else
+    printf("win32 platform!\n");
+#endif
 	return 0;
 }
