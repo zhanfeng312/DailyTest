@@ -30,7 +30,7 @@ sources := $(filter %.c %.s, $(sources))
 
 #filter-out: 该函数用于从名字列表_text中根据模式_pattern滤除一部分名字，并将滤除后的列表返回
 #用法：$(filter-out _pattern, _text)
-objects = main1.o foo.o main2.o bar.o
+#objects = main1.o foo.o main2.o bar.o
 result = $(filter-out main%.o, $(objects))
 
 #notdir: 该函数用于从路径_names中抽取文件名，并将文件名返回
