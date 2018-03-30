@@ -1,4 +1,4 @@
-#include "my_common.h"
+#include "../my_common.h"
 
 char g_buf[10] = {0};
 

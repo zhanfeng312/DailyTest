@@ -1,12 +1,9 @@
-#include <stddef.h>
-//#define NDEBUG
+
 #include "assert.h"
 
 int main(int argc, char **argv) {
-    
-    char *p = NULL;
-    
-    assert(p != NULL);
-    
+
+    char *p = "1234567890";
+
     return 0;
 }
