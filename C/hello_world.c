@@ -49,17 +49,17 @@ int main(int argc, char* argv[])
     struct sigaction sa;
     sa.sa_flags = 0;
     
-    sa.sa_handler = SIG_IGN;
+    sa.sa_handler = SIG_IGN;  
     sigaction (SIGCHLD, &sa, NULL);/* WIFEXITED and WEXITSTATUS after system need SIGCHLD */
     sigaction (SIGPIPE, &sa, NULL);
     
     sa.sa_handler = sig_handle;
-    sigaction (SIGHUP, &sa, NULL);
-    sigaction (SIGQUIT, &sa, NULL);
-    sigaction (SIGTERM, &sa, NULL);/* killall */
-    sigaction (SIGSTOP, &sa, NULL);
-    sigaction (SIGINT, &sa, NULL);
-    //signal deal end
+    sigaction(SIGHUP, &sa, NULL);
+    sigaction(SIGQUIT, &sa, NULL);
+    sigaction(SIGTERM, &sa, NULL);/* killall */
+    sigaction(SIGINT, &sa, NULL);
+    sigaction(SIGTSTP, &sa, NULL);
+    //signal deal end                                                                                                                                                                                            
     
     //parse cmd start
     int c = 0;
@@ -137,23 +137,17 @@ static void sig_handle(int sig)
     switch (sig)
     {
         case SIGPIPE:
-            puts("");
-            break;
         case SIGHUP:
-            puts("");
-            break;
         case SIGINT:
-            puts("ctrl+c clicked");
-            break;
+        case SIGTSTP:
         case SIGTERM:
         case SIGQUIT:
-        case SIGSTOP:
             puts("");
             if (g_debug) puts(PROG_NAME" end ...");
             g_system_done = 1;
             break;
     }
-}
+} 
 
 
 int prog_exit(int eno)
