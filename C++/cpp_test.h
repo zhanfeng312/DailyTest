@@ -1,5 +1,5 @@
-#ifndef __TEST_H_
-#define __TEST_H_
+#ifndef __CPP_TEST_H
+#define __CPP_TEST_H
 
 #include <string>
 using namespace std;
@@ -20,4 +20,4 @@ private:
 	string m_name;
 };
 
-#endif //__TEST_H_
+#endif //__CPP_TEST_H
