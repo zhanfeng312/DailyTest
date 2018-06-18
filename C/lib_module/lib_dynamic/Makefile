@@ -4,9 +4,7 @@ CFLAGS += -shared -fPIC
 
 LDFLAGS += -L$(shell pwd)
 
-ifeq ($(CC), /opt/brcm/toolchains/stbgcc-4.5.4-2.8/bin/mipsel-linux-gcc)
 LDFLAGS += -Wl,-rpath-link=$(shell pwd)
-endif
 
 $(target): test_dynamic_lib.o libmycal.so libmyhello.so
 	$(CC) -o $@ $< $(LDFLAGS) -lmyhello
