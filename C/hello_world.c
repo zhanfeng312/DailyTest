@@ -1,4 +1,4 @@
-#include <stdio.h>
+#include "nt_common.h"
 #include <stdlib.h>
 #include <string.h>     /* not strings.h !!! */
 #include <stdarg.h>
@@ -24,6 +24,7 @@
 
 
 #define PROG_NAME   "daemon"
+
 
 void        usage();
 static void sig_handle(int sig);
@@ -67,15 +68,15 @@ int main(int argc, char* argv[])
     {
         switch(c)
         {
-            case 'h':
-                usage();
-                exit (1);
-            case 'd':
-                g_debug = 1;
-                break;
-            default:
-                usage();
-                exit (1);
+        case 'h':
+        	usage();
+            exit (1);
+       	case 'd':
+           	g_debug = 1;
+            break;
+        default:
+            usage();
+            exit (1);
         }
     }
     
@@ -104,48 +105,47 @@ int main(int argc, char* argv[])
 
 void *worker_thread(void* arg)
 {
-    if (g_debug) puts("worker_thread start ...");
+    if (g_debug) nt_log("worker_thread start ...");
     while (0 == g_system_done)
     {
         sleep(1);
     }
-    if (g_debug) puts("worker_thread end ...");
+    if (g_debug) nt_log("worker_thread end ...");
     pthread_exit (NULL);
 }
 
 void *event_thread(void* arg)
 {
-    if (g_debug) puts("event_thread start ...");
+    if (g_debug) nt_log("event_thread start ...");
     while (0 == g_system_done)
     {   
         sleep(1);
     }
-    if (g_debug) puts("event_thread end ...");
+    if (g_debug) nt_log("event_thread end ...");
     pthread_exit (NULL);
 }
 
 
 void usage()
 {
-    fprintf(stderr, "-h: show help message\n");
-    fprintf(stderr, "-g: open debug mode\n");
+    nt_log("-h: show help message\n");
+    nt_log("-g: open debug mode\n");
 }
 
 static void sig_handle(int sig)
-{
-    printf("%d\n", sig);
+{	
+	nt_log("receive signal %d\n", sig);
     switch (sig)
     {
-        case SIGPIPE:
-        case SIGHUP:
-        case SIGINT:
-        case SIGTSTP:
-        case SIGTERM:
-        case SIGQUIT:
-            puts("");
-            if (g_debug) puts(PROG_NAME" end ...");
+    case SIGPIPE:
+    case SIGHUP:
+    case SIGINT:
+    case SIGTSTP:
+    case SIGTERM:
+    case SIGQUIT:
+    	if (g_debug) nt_log(PROG_NAME" end ...");
             g_system_done = 1;
-            break;
+        break;
     }
 } 
 
