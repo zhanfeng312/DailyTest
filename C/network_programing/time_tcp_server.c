@@ -117,12 +117,12 @@ int main(int argc, char *argv[])
 
     struct sockaddr_in clientaddr;
     socklen_t clientaddr_len = sizeof(clientaddr);
-    while (1){
+    while (1) {
         int fd = accept(sockfd,
-                 (struct sockaddr*)&clientaddr,
-                 &clientaddr_len);
-        if (fd < 0){
-            
+            (struct sockaddr*)&clientaddr,
+            &clientaddr_len);
+        if (fd < 0) {
+
             perror("accept error");
             continue;
         }
