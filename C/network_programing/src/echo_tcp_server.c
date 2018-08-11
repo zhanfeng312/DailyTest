@@ -6,7 +6,7 @@
 #include <arpa/inet.h>
 #include <memory.h>
 #include <signal.h>
-#include <time.h>
+#include <errno.h>
 
 int sockfd = 0;
 
@@ -15,10 +15,13 @@ void sig_handler(int signo)
     if (signo == SIGINT){
         
         printf("server close\n");
-
         /*6、关闭socket*/
         close(sockfd);
         exit(1);
+    }
+    if (signo == SIGCHLD) {
+        printf("child process deaded...!\n");
+        wait(0);
     }
 }
 
@@ -37,15 +40,32 @@ void out_addr(struct sockaddr_in *clientaddr)
 
 void do_service(int fd)
 {
-    long t = time(0);
-// TODO: ctime
-    char *s = ctime(&t);
-    size_t size = strlen(s) * sizeof(char);
+    /*和客户端进行读写操作（双向通信）*/
 
-    //将服务器端获得的系统时间写回到客户端
-// TODO: write
-    if (write(fd, s, size) != size){
-        perror("write error!");
+    char buff[512];
+    while (1) {
+
+        memset(buff, 0, sizeof(buff));
+        printf("start read and write...\n");
+
+        size_t size;
+        if ((size = read(fd, buff, sizeof(buff))) < 0) {
+            perror("protocol error");
+            break;
+        }
+        else if (size == 0) {
+            break;
+        }
+        else
+        {
+            printf("%s\n", buff);
+            if (write(fd, buff, sizeof(buff)) < 0) {
+                if (errno == EPIPE) {
+                    break;
+                }
+                perror("protocol error");
+            }
+        }
     }
 }
 
@@ -59,6 +79,11 @@ int main(int argc, char *argv[])
 
     if(signal (SIGINT, sig_handler) == SIG_ERR){
         
+        perror("signal sig_handler error");
+        exit(1);
+    }
+    if (signal(SIGCHLD, sig_handler) == SIG_ERR) {
+
         perror("signal sig_handler error");
         exit(1);
     }
@@ -119,8 +144,8 @@ int main(int argc, char *argv[])
     socklen_t clientaddr_len = sizeof(clientaddr);
     while (1) {
         int fd = accept(sockfd,
-            (struct sockaddr*)&clientaddr,
-            &clientaddr_len);
+                    (struct sockaddr*)&clientaddr,
+                    &clientaddr_len);
         if (fd < 0) {
 
             perror("accept error");
@@ -128,14 +153,25 @@ int main(int argc, char *argv[])
         }
 
         /*
-        5、调用IO函数(read/write) 和
+        5、启动子进程去调用IO函数(read/write) 和
         连接的客户端进行双向的通信
         */
-        out_addr(&clientaddr);
-        do_service(fd);
 
-        /*6、关闭socket*/
-        close(fd);
+        pid_t pid = fork();
+        if (pid < 0) {
+            continue;
+        }
+        else if (pid == 0) {  //child process
+
+            out_addr(&clientaddr);
+            do_service(fd);
+            //步骤6: 关闭socket
+            close(fd);
+            break;
+        }
+        else {  //parent process，需要回收资源
+            close(fd); //关闭父进程的那一份
+        }
     }
 
     return 0;

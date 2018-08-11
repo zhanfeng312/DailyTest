@@ -11,6 +11,7 @@
 int main(int argc, char *argv[])
 {
     if (argc < 3){
+
         printf("usage: %s ip port\n", argv[0]);
         exit(1);
     }
@@ -20,6 +21,7 @@ int main(int argc, char *argv[])
     */
     int sockfd = socket(AF_INET, SOCK_STREAM, 0);
     if (sockfd < 0){
+
         perror("socket error");
         exit(1);
     }
@@ -30,32 +32,31 @@ int main(int argc, char *argv[])
     serveraddr.sin_family = AF_INET;
     serveraddr.sin_port = htons(atoi(argv[2]));
     //将ip地址转换成网络字节序后填入serveraddr中
-    inet_pton(AF_INET, argv[1],
-                &serveraddr.sin_addr.s_addr);
+    inet_pton(AF_INET, argv[1], &serveraddr.sin_addr.s_addr);
     /*
     步骤二: 客户端调用connect 函数连接到服务器端
     */
-    if (connect(sockfd,
-                (struct sockaddr*)&serveraddr,
-                sizeof (serveraddr)) < 0){
+    if (connect(sockfd, (struct sockaddr*)&serveraddr, sizeof (serveraddr)) < 0){
+
         perror("connect error");
         exit(1);
     }
 
     /*
-    步骤三: 调用IO函数(read/write) 和 服务器端进行双向通信
+    步骤三: 调用IO函数(read/write) 和 服务器端进行通信
     */
 
     char buffer[1024] = {0};
     size_t size;
 
-    if ((size = read(sockfd, 
-                      buffer, sizeof(buffer))) < 0){
+    if ((size = read(sockfd, buffer, sizeof(buffer))) < 0){
+
         perror("read error");
         exit(1);
     }
     
     if (write(STDOUT_FILENO, buffer, size) != size){
+
         perror("write error");
         exit(1);
     }
