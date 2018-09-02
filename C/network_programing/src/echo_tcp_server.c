@@ -15,7 +15,7 @@ void sig_handler(int signo)
     if (signo == SIGINT){
         
         printf("server close\n");
-        /*6¡¢¹Ø±Õsocket*/
+        /*6ã€å…³é—­socket*/
         close(sockfd);
         exit(1);
     }
@@ -25,14 +25,14 @@ void sig_handler(int signo)
     }
 }
 
-/*Êä³öÒÑÁ¬½ÓµÄ¿Í»§¶ËĞÅÏ¢*/
+/*è¾“å‡ºå·²è¿æ¥çš„å®¢æˆ·ç«¯ä¿¡æ¯*/
 void out_addr(struct sockaddr_in *clientaddr)
 {
-    //½«¶Ë¿Ú´ÓÍøÂç×Ö½ÚĞò×ª»»³ÉÖ÷»ú×Ö½ÚĞò
+    //å°†ç«¯å£ä»ç½‘ç»œå­—èŠ‚åºè½¬æ¢æˆä¸»æœºå­—èŠ‚åº
     int port = ntohs(clientaddr->sin_port);
     char ip[16] = {0};
 
-    //½«ipµØÖ·´ÓÍøÂç×Ö½ÚĞò×ª»»³Éµã·ÖÊ®½øÖÆ
+    //å°†ipåœ°å€ä»ç½‘ç»œå­—èŠ‚åºè½¬æ¢æˆç‚¹åˆ†åè¿›åˆ¶
     inet_ntop(AF_INET,
               &clientaddr->sin_addr.s_addr, ip, sizeof(ip));
     printf("client: %s(%d) connected\n", ip, port);
@@ -40,7 +40,7 @@ void out_addr(struct sockaddr_in *clientaddr)
 
 void do_service(int fd)
 {
-    /*ºÍ¿Í»§¶Ë½øĞĞ¶ÁĞ´²Ù×÷£¨Ë«ÏòÍ¨ĞÅ£©*/
+    /*å’Œå®¢æˆ·ç«¯è¿›è¡Œè¯»å†™æ“ä½œï¼ˆåŒå‘é€šä¿¡ï¼‰*/
 
     char buff[512];
     while (1) {
@@ -89,8 +89,8 @@ int main(int argc, char *argv[])
     }
 
     /*
-    1¡¢´´½¨socket
-      socket´´½¨ÔÚÄÚºËÖĞ£¬ÊÇÒ»¸ö½á¹¹Ìå
+    1ã€åˆ›å»ºsocket
+      socketåˆ›å»ºåœ¨å†…æ ¸ä¸­ï¼Œæ˜¯ä¸€ä¸ªç»“æ„ä½“
       AF_INET: IPV4
       SOCK_STREAM : tcp
     */
@@ -101,12 +101,12 @@ int main(int argc, char *argv[])
     }
 
     /*
-    2¡¢µ÷ÓÃbindº¯Êı½«socket ºÍµØÖ·(°üÀ¨ip,port)½øĞĞ°ó¶¨
+    2ã€è°ƒç”¨bindå‡½æ•°å°†socket å’Œåœ°å€(åŒ…æ‹¬ip,port)è¿›è¡Œç»‘å®š
     */
 
     struct sockaddr_in serveraddr;
     memset(&serveraddr, 0, sizeof(serveraddr));
-    //ÍùµØÖ·ÖĞÌîÈëip, port, internetµØÖ·×åÀàĞÍ
+    //å¾€åœ°å€ä¸­å¡«å…¥ip, port, internetåœ°å€æ—ç±»å‹
     serveraddr.sin_family = AF_INET; //IPV4
     serveraddr.sin_port = htons(atoi(argv[1]));//port
     serveraddr.sin_addr.s_addr = INADDR_ANY;
@@ -118,11 +118,11 @@ int main(int argc, char *argv[])
     }
 
     /*
-    3¡¢µ÷ÓÃlisten º¯ÊıÆô¶¯¼àÌı(Ö¸¶¨port¼àÌı)
-       Í¨ÖªÏµÍ³È¥½ÓÊÕÀ´×Ô¿Í»§¶ËµÄÁ¬½ÓÇëÇó
-       (½«½ÓÊÕµ½µÄ¿Í»§¶ËÁ¬½ÓÇëÇó·ÅÖÃµ½¶ÔÓ¦µÄ¶ÓÁĞÖĞ)
+    3ã€è°ƒç”¨listen å‡½æ•°å¯åŠ¨ç›‘å¬(æŒ‡å®športç›‘å¬)
+       é€šçŸ¥ç³»ç»Ÿå»æ¥æ”¶æ¥è‡ªå®¢æˆ·ç«¯çš„è¿æ¥è¯·æ±‚
+       (å°†æ¥æ”¶åˆ°çš„å®¢æˆ·ç«¯è¿æ¥è¯·æ±‚æ”¾ç½®åˆ°å¯¹åº”çš„é˜Ÿåˆ—ä¸­)
 
-       µÚ¶ş¸ö²ÎÊı: Ö¸¶¨¶ÓÁĞµÄ³¤¶È
+       ç¬¬äºŒä¸ªå‚æ•°: æŒ‡å®šé˜Ÿåˆ—çš„é•¿åº¦
     */
 
     if (listen(sockfd, 10) < 0){
@@ -133,11 +133,11 @@ int main(int argc, char *argv[])
 
 
     /*
-    4¡¢µ÷ÓÃaccept º¯Êı´Ó¶ÓÁĞÖĞ»ñµÃ
-       Ò»¸ö¿Í»§¶ËµÄÇëÇóÁ¬½Ó£¬²¢·µ»ØĞÂµÄsocketÃèÊö·û
+    4ã€è°ƒç”¨accept å‡½æ•°ä»é˜Ÿåˆ—ä¸­è·å¾—
+       ä¸€ä¸ªå®¢æˆ·ç«¯çš„è¯·æ±‚è¿æ¥ï¼Œå¹¶è¿”å›æ–°çš„socketæè¿°ç¬¦
 
-       ×¢Òâ: ÈôÃ»ÓĞ¿Í»§¶ËÁ¬½Ó£¬µ÷ÓÃ´Ëº¯Êı»á×èÈû£¬Ö±µ½
-       »ñµÃÒ»¸ö¿Í»§¶ËµÄÁ´½Ó
+       æ³¨æ„: è‹¥æ²¡æœ‰å®¢æˆ·ç«¯è¿æ¥ï¼Œè°ƒç”¨æ­¤å‡½æ•°ä¼šé˜»å¡ï¼Œç›´åˆ°
+       è·å¾—ä¸€ä¸ªå®¢æˆ·ç«¯çš„é“¾æ¥
     */
 
     struct sockaddr_in clientaddr;
@@ -153,8 +153,8 @@ int main(int argc, char *argv[])
         }
 
         /*
-        5¡¢Æô¶¯×Ó½ø³ÌÈ¥µ÷ÓÃIOº¯Êı(read/write) ºÍ
-        Á¬½ÓµÄ¿Í»§¶Ë½øĞĞË«ÏòµÄÍ¨ĞÅ
+        5ã€å¯åŠ¨å­è¿›ç¨‹å»è°ƒç”¨IOå‡½æ•°(read/write) å’Œ
+        è¿æ¥çš„å®¢æˆ·ç«¯è¿›è¡ŒåŒå‘çš„é€šä¿¡
         */
 
         pid_t pid = fork();
@@ -165,12 +165,12 @@ int main(int argc, char *argv[])
 
             out_addr(&clientaddr);
             do_service(fd);
-            //²½Öè6: ¹Ø±Õsocket
+            //æ­¥éª¤6: å…³é—­socket
             close(fd);
             break;
         }
-        else {  //parent process£¬ĞèÒª»ØÊÕ×ÊÔ´
-            close(fd); //¹Ø±Õ¸¸½ø³ÌµÄÄÇÒ»·İ
+        else {  //parent processï¼Œéœ€è¦å›æ”¶èµ„æº
+            close(fd); //å…³é—­çˆ¶è¿›ç¨‹çš„é‚£ä¸€ä»½
         }
     }
 
