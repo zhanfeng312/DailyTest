@@ -22,8 +22,7 @@ void sig_handler(int signo)
 void out_addr(struct sockaddr_in *clientaddr)
 {
     char ip[16] = {0};
-    inet_ntop(AF_INET,
-              &(clientaddr->sin_addr.s_addr), ip, sizeof(ip));
+    inet_ntop(AF_INET, &clientaddr->sin_addr.s_addr, ip, sizeof(ip));
     int port = ntohs(clientaddr->sin_port);
     printf("client: %s(%d)\n", ip, port);
 }
@@ -56,7 +55,7 @@ void do_service()
 int main(int argc, char *argv[])
 {
     if (argc < 2){
-        
+
         printf("usage: %s port\n", argv[0]);
         exit(1);
     }
@@ -65,7 +64,6 @@ int main(int argc, char *argv[])
         perror("signal sigint error");
         exit(1);
     }
-
 
     /*步骤1: 创建socket*/
     sockfd = socket(AF_INET, SOCK_DGRAM, 0);
@@ -91,8 +89,7 @@ int main(int argc, char *argv[])
     serveraddr.sin_port = htons(atoi(argv[1]));//port
     serveraddr.sin_addr.s_addr = INADDR_ANY; //ip
 
-    if (bind(sockfd, (struct sockaddr*)&serveraddr,
-             sizeof(serveraddr)) < 0){
+    if (bind(sockfd, (struct sockaddr*)&serveraddr, sizeof(serveraddr)) < 0){
         perror("bind error");
         exit(1);
     }

@@ -30,6 +30,7 @@ void out_addr(struct sockaddr_in *clientaddr)
 
     //将ip地址从网络字节序转换成点分十进制
     inet_ntop(AF_INET, &clientaddr->sin_addr.s_addr, ip, sizeof(ip));
+
     printf("client: %s(%d) connected\n", ip, port);
 }
 
@@ -49,13 +50,14 @@ void do_service(int fd)
 
 int main(int argc, char *argv[])
 {
+    //判断输入参数个数
     if (argc < 2){
         
-        printf("usage: %s port\n", argv[0]);
+        fprintf(stderr, "usage: %s port\n", argv[0]);
         exit(1);
     }
 
-    if(signal (SIGINT, sig_handler) == SIG_ERR){
+    if(signal(SIGINT, sig_handler) == SIG_ERR){
         
         perror("signal sig_handler error");
         exit(1);
@@ -65,7 +67,8 @@ int main(int argc, char *argv[])
     1、创建socket
       socket创建在内核中，是一个结构体
       AF_INET: IPV4
-      SOCK_STREAM : tcp
+      SOCK_STREAM:tcp
+      SOCK_DGRAM: udp
     */
     sockfd = socket(AF_INET, SOCK_STREAM, 0);
     if (sockfd < 0){
@@ -77,7 +80,6 @@ int main(int argc, char *argv[])
     /*
     2、调用bind函数将socket 和地址(包括ip,port)进行绑定
     */
-
     struct sockaddr_in serveraddr;
     memset(&serveraddr, 0, sizeof(serveraddr));
     //往地址中填入ip, port, internet地址族类型
@@ -91,7 +93,7 @@ int main(int argc, char *argv[])
     }
 
     /*
-    3、调用listen 函数启动监听(指定port监听)
+    3、调用listen 函数启动监听
        通知系统去接收来自客户端的连接请求
        (将接收到的客户端连接请求放置到对应的队列中)
 
@@ -104,7 +106,6 @@ int main(int argc, char *argv[])
         exit(1);
     }
 
-
     /*
     4、调用accept 函数从队列中获得
        一个客户端的请求连接，并返回新的socket描述符
@@ -116,6 +117,7 @@ int main(int argc, char *argv[])
     struct sockaddr_in clientaddr;
     socklen_t clientaddr_len = sizeof(clientaddr);
     while (1) {
+        //连接上来的客户端信息保存在clientaddr中
         int fd = accept(sockfd, (struct sockaddr*)&clientaddr, &clientaddr_len);
         if (fd < 0) {
 
