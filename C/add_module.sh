@@ -9,12 +9,11 @@ fi
 
 cd `dirname $0`
 
-mkdir -p $1/{bin,obj,include,src}
+mkdir -p $1/{bin,include,src}
 
 touch .gitkeep
 
 ${CP} .gitkeep $1/bin
-${CP} .gitkeep $1/obj
 ${CP} .gitkeep $1/include
 ${CP} .gitkeep $1/src
 

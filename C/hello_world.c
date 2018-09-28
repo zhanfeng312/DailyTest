@@ -1,4 +1,4 @@
-#include "nt_common.h"
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>     /* not strings.h !!! */
 #include <stdarg.h>
@@ -22,16 +22,18 @@
 #include <pthread.h>
 #include <signal.h>
 
+#define nt_log(fmt, ...) \
+			do{ \
+        		fprintf(stderr, "%s %d " fmt, __FUNCTION__, __LINE__,  ##__VA_ARGS__);\
+    		}while(0)
 
 #define PROG_NAME   "daemon"
 
-
-void        usage();
-static void sig_handle(int sig);
-int         prog_exit(int eno);
-void*       worker_thread(void* arg);
-void*       event_thread(void* arg);
-
+static void        usage();
+static void        sig_handle(int sig);
+static int         prog_exit(int eno);
+static void       *worker_thread(void* arg);
+static void       *event_thread(void* arg);
 
 
 /*********************************************************************************
@@ -40,7 +42,6 @@ void*       event_thread(void* arg);
 int     g_debug = 0;
 int     g_system_done = 0;
 /********************************************************************************/
-
 
 
 //entry
@@ -105,36 +106,38 @@ int main(int argc, char* argv[])
 
 void *worker_thread(void* arg)
 {
-    if (g_debug) nt_log("worker_thread start ...");
+    if (g_debug) printf("worker_thread start ...\n");
     while (0 == g_system_done)
     {
         sleep(1);
     }
-    if (g_debug) nt_log("worker_thread end ...");
+    if (g_debug) printf("worker_thread end ...\n");
     pthread_exit (NULL);
 }
 
 void *event_thread(void* arg)
 {
-    if (g_debug) nt_log("event_thread start ...");
+    if (g_debug) printf("event_thread start ...\n");
     while (0 == g_system_done)
     {   
         sleep(1);
     }
-    if (g_debug) nt_log("event_thread end ...");
+    if (g_debug) printf("event_thread end ...\n");
     pthread_exit (NULL);
 }
 
 
 void usage()
 {
+    fprintf(stderr, "------------------------------\n");
     nt_log("-h: show help message\n");
     nt_log("-g: open debug mode\n");
+    fprintf(stderr, "------------------------------\n");
 }
 
 static void sig_handle(int sig)
 {	
-	nt_log("receive signal %d\n", sig);
+    printf("receive signal %d\n", sig);
     switch (sig)
     {
     case SIGPIPE:
@@ -143,12 +146,11 @@ static void sig_handle(int sig)
     case SIGTSTP:
     case SIGTERM:
     case SIGQUIT:
-    	if (g_debug) nt_log(PROG_NAME" end ...");
+    	if (g_debug) printf(PROG_NAME" end ...");
             g_system_done = 1;
         break;
     }
 } 
-
 
 int prog_exit(int eno)
 {   
