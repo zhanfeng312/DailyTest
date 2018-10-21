@@ -5,7 +5,7 @@
 
 
 
-//´´½¨ÕË»§
+//åˆ›å»ºè´¦æˆ·
 Account* create_account(int code, double balance)
 {
     Account *a = (Account*)malloc(sizeof(Account));
@@ -13,44 +13,54 @@ Account* create_account(int code, double balance)
     
     a->code = code;
     a->balance = balance;
-    //¶Ô»¥³âËø½øÐÐ³õÊ¼»¯
+    //å¯¹äº’æ–¥é”è¿›è¡Œåˆå§‹åŒ–
     //pthread_mutex_init(&a->mutex, NULL);
 
-    //¶Ô¶ÁÐ´Ëø½øÐÐ³õÊ¼»¯
-    pthread_rwlock_init(&a->rwlock, NULL);
+    //å¯¹è¯»å†™é”è¿›è¡Œåˆå§‹åŒ–
+    //pthread_rwlock_init(&a->rwlock, NULL);
+
+	//åˆå§‹åŒ–çº¿ç¨‹ä¿¡å·é‡ï¼Œåˆå§‹å€¼ä¸º1
+	sem_init(&a->sem, 0, 1);
 
     return a;
 }
 
-//Ïú»ÙÕË»§
+//é”€æ¯è´¦æˆ·
 void destroy_account(Account *a)
 {
     assert(a != NULL);
-    //Ïú»Ù»¥³âËø
+    //é”€æ¯äº’æ–¥é”
     //pthread_mutex_destroy(&a->mutex);
 
-    //Ïú»Ù¶ÁÐ´Ëø
-    pthread_rwlock_destroy(&a->rwlock);
+    //é”€æ¯è¯»å†™é”
+    //pthread_rwlock_destroy(&a->rwlock);
+
+	//é”€æ¯çº¿ç¨‹ä¿¡å·é‡
+	sem_destroy(&a->sem);
     free(a);
 }
 
 
-//È¡¿î
+//å–æ¬¾
 double withdraw(Account *a, double amt)
 {
     assert(a != NULL);
 
-    //¶Ô¹²Ïí×ÊÔ´²Ù×÷µÄÁÙ½çÇø
-    //pthread_mutex_lock(&a->mutex);//¶Ô¹²Ïí×ÊÔ´£¨ÕË»§£©¼ÓËø
-    //¼ÓÐ´Ëø
-    pthread_rwlock_wrlock(&a->rwlock);
+    //å¯¹å…±äº«èµ„æºæ“ä½œçš„ä¸´ç•ŒåŒº
+    //pthread_mutex_lock(&a->mutex);//å¯¹å…±äº«èµ„æºï¼ˆè´¦æˆ·ï¼‰åŠ é”
+    //åŠ å†™é”
+    //pthread_rwlock_wrlock(&a->rwlock);
+	//P(1)æ“ä½œ
+	sem_wait(&a->sem);
 
     if (amt < 0 || amt > a->balance){
         
-        //ÊÍ·Å»¥³âËø
+        //é‡Šæ”¾äº’æ–¥é”
         //pthread_mutex_unlock(&a->mutex);
-        //ÊÍ·ÅÐ´Ëø
-        pthread_rwlock_unlock(&a->rwlock);
+        //é‡Šæ”¾å†™é”
+        //pthread_rwlock_unlock(&a->rwlock);
+		//V(1)æ“ä½œ
+		sem_post(&a->sem);
         return 0.0;
     }
 
@@ -59,25 +69,31 @@ double withdraw(Account *a, double amt)
     balance -= amt;
     a->balance = balance;
 
-    //ÊÍ·Å»¥³âËø
+    //é‡Šæ”¾äº’æ–¥é”
     //pthread_mutex_unlock(&a->mutex);
-    //ÊÍ·ÅÐ´Ëø
-    pthread_rwlock_unlock(&a->rwlock);
+    //é‡Šæ”¾å†™é”
+    //pthread_rwlock_unlock(&a->rwlock);
+	//V(1)æ“ä½œ
+	sem_post(&a->sem);
 
     return amt;
 }
 
-//´æ¿î
+//å­˜æ¬¾
 double deposit(Account *a, double amt)
 {
     assert(a != NULL);
 
     //pthread_mutex_lock(&a->mutex);
-    pthread_rwlock_wrlock(&a->rwlock);
+    //pthread_rwlock_wrlock(&a->rwlock);
+	//P(1)æ“ä½œ
+	sem_wait(&a->sem);
 
     if (amt < 0){
         //pthread_mutex_unlock(&a->mutex);
-        pthread_rwlock_unlock(&a->rwlock);
+        //pthread_rwlock_unlock(&a->rwlock);
+		//V(1)æ“ä½œ
+		sem_post(&a->sem);
         return 0.0;
     }
 
@@ -87,23 +103,29 @@ double deposit(Account *a, double amt)
     a->balance = balance;
 
     //pthread_mutex_unlock(&a->mutex);
-    pthread_rwlock_unlock(&a->rwlock);
+    //pthread_rwlock_unlock(&a->rwlock);
+	//V(1)æ“ä½œ
+	sem_post(&a->sem);
 
     return amt;
 }
 
-//²é¿´ÕË»§Óà¶î
+//æŸ¥çœ‹è´¦æˆ·ä½™é¢
 double get_balance(Account *a)
 {
     assert(a != NULL);
-
-    //pthread_mutex_lock(&a->mutex);
-    pthread_rwlock_rdlock(&a->rwlock);
+	
+	//pthread_mutex_lock(&a->mutex);
+    //pthread_rwlock_rdlock(&a->rwlock);
+	//P(1)æ“ä½œ
+	sem_wait(&a->sem);
 
     double balance = a->balance;
 
     //pthread_mutex_unlock(&a->mutex);
-    pthread_rwlock_unlock(&a->rwlock);
+    //pthread_rwlock_unlock(&a->rwlock);
+	//V(1)æ“ä½œ
+	sem_post(&a->sem);
 
     return balance;
 }

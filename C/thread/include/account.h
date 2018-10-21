@@ -1,6 +1,7 @@
 #ifndef __ACCOUNT_H__
 #define __ACCOUNT_H__
 #include <pthread.h>
+#include <semaphore.h>
 
 typedef struct 
 {
@@ -16,7 +17,9 @@ typedef struct
     */
     //pthread_mutex_t mutex;
     //定义读写锁
-    pthread_rwlock_t rwlock;
+    //pthread_rwlock_t rwlock;
+	//定义线程信号量
+	sem_t sem;
 }Account;
 
 
