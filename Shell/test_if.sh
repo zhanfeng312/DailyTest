@@ -15,7 +15,7 @@ else
 fi
 
 #-------------------------------------------------------
-
+#整数类型比较
 var1=1
 var2=2
 var3=3
@@ -39,6 +39,8 @@ fi
 if [[ "$var1" == 1 && "$var3" != 2 ]]; then
     echo "not equal"
 fi
+
+#还是[[ ]]好用
 
 if [ "fang" \< "gong" ]; then
 	echo "fang < gong"

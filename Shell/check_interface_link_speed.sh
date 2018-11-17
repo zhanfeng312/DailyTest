@@ -9,7 +9,7 @@ SLEEP_TIME=2
 
 while true
 do	
-	${ETHTOOL} ${INTERFACE_NAME} | grep "${MATCH_PATTERN}" 1>/dev/null 2>/dev/null
+	${ETHTOOL} ${INTERFACE_NAME} | grep "${MATCH_PATTERN}" &>/dev/null
 	
 	if [ $? -eq 0 ]; then
 	

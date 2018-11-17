@@ -2,11 +2,21 @@
 
 #read from file
 
+function show_warning()
+{
+	echo -e "\033[32m $1 \033[0m"
+}
+
+function show_error()
+{
+	echo -e "\033[33m $1 \033[0m"
+}
+
 function while_read_LINE1()
 {
 	while read LINE
 	do
-		echo $LINE | cut -d ":" -f 1
+		echo $LINE
 	done < $1
 }
 
@@ -25,5 +35,10 @@ function for_in_file()
 		echo $i
 	done
 }
+
+if [ $# -ne 1 ]; then
+	show_error "usage $0 file"
+	exit 1
+fi
 
 while_read_LINE1 $1
