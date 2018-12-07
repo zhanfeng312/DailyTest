@@ -1,10 +1,19 @@
 #include <stdio.h>
+#include <string.h>
 
-#define A "123"
-const char *sample_version = "fang" "zhan" "feng" A;
 
 int main(int argc, char *argv[])
 {
-    printf("%s\n", sample_version);
+	char buf[] = "1;http://acs.totaltv.com.tw";
+	char* pURL = NULL;
+	char* pStatus = NULL;
+	char* pSting = NULL;
+
+	//×Ö·û´®·Ö¸î
+	pStatus = strtok_r(buf, ";", &pSting);
+	pURL = strtok_r(NULL, ";", &pSting);
+
+	printf("%s:%s\n", pURL, pSting);
+
     return 0;
 }
