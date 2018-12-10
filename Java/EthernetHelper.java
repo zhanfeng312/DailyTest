@@ -1,449 +1,545 @@
-package com.inspur.stbdw.network;
+package com.inspur.net.NetTest;
 
-import java.io.IOException;
-import java.lang.reflect.Method;
-import java.net.InetAddress;
-import java.util.ArrayList;
-
-import android.R.integer;
-import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.EthernetManager;
 import android.net.IpConfiguration;
-import android.net.IpConfiguration.ProxySettings;
 import android.net.LinkAddress;
-import android.net.IpConfiguration.IpAssignment;
+import android.net.LinkProperties;
 import android.net.NetworkAbility;
+import android.net.NetworkUtils;
+import android.net.RouteInfo;
 import android.net.StaticIpConfiguration;
-import android.os.Build;
+import android.os.SystemProperties;
 import android.util.Log;
-import android.widget.GridView;
-import android.widget.Toast;
 
-import com.inspur.stbdw.util.ToastUtil;
-import com.inspur.stbdw.util.Tools;
-import com.inspur.stbfwui.L;
+import java.lang.reflect.Method;
+import java.net.Inet4Address;
+import java.net.InetAddress;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
+/*
+    封装了Ethernet的常用接口
+ */
 public class EthernetHelper {
 
-	/**
-	 * 网卡名称 TODO　mstar是否改接口，eth0是否需要动态获取
-	 */
-	private static String ethString = "eth0";
-	private static EthernetManager mEthManager;
-	private static Context context;
-	private static ConnectivityManager mConnectivityManager;
+    private static final String TAG = "NetTest";
 
-	public EthernetHelper(Context context) {
-        
-        this.context = context;
-	}
+    public static final String ETHERNET_CONN_MODE_DHCP = "DHCP";
+    public static final String ETHERNET_CONN_MODE_MANUAL = "STATIC";
 
-	/*
-	 * private static EthernetDevInfo getEthernetDevInfo() { return
-	 * mEthManager.getSavedEthConfig(); }
-	 */
-	/**
-	 * 
-	 */
-	public static String getMacAddress() {
-		// return getEthernetDevInfo().getMacAddress(ethString);
-		return NetUtils.subString(NetUtils.getLocalMacAddressFromIp(context));
-	}
+    private static EthernetManager mEthManager;
 
-	/**
-	 * 连接方式 自动手动
-	 * 
-	 * @return EthernetDevInfo.ETHERNET_CONN_MODE_DHCP
-	 *         EthernetDevInfo.ETHERNET_CONN_MODE_MANUAL
-	 */
-	public static String getConnectMode(Context context, int type) {
-		String modeString = "";
-		mEthManager = (EthernetManager) context.getSystemService(Context.ETHERNET_SERVICE);
-		try {
-			modeString = mEthManager.getConfiguration(type).getIpAssignment().name();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return modeString;
-	}
+    private static ConnectivityManager mConnectivityManager;
 
-	/**
-	 * IP地址
-	 * 
-	 * @return
-	 */
-	@SuppressLint("NewApi") public static String getIpAddress(Context context,int type) {
-		/*
-		 * if
-		 * (mConnectivityManager.getLinkProperties(NetworkAbility.translateEthernetNetworkType(type)
-		 * ) .getAddresses().size()>0) { return
-		 * mConnectivityManager.getLinkProperties
-		 * (NetworkAbility.translateEthernetNetworkType(type))
-		 * .getAddresses().get(0).toString(); }else { return "0.0.0.0"; }
-		 */
-		String ipString = "0.0.0.0";
-		/* try {
-			ipString = NetUtils.getLocalIpAddress();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} */
-		 mConnectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-			Log.i("MARK", "getNetMask ");
-			Log.i("MARKTEST", "type== "+type +"  translateEthernetNetworkType="+NetworkAbility.translateEthernetNetworkType(type));
-			try {
+    public static void setDhcpConfig(Context context)
+    {
+        try {
+            Log.d(TAG, "start setDhcpConfig");
 
-				if (mConnectivityManager.getLinkProperties(NetworkAbility.translateEthernetNetworkType(type))!=null) {
-					if (mConnectivityManager.getLinkProperties(NetworkAbility.translateEthernetNetworkType(type)).getLinkAddresses().size() > 0) {
-						Log.i("MARK", "if ");
-						String ip = mConnectivityManager.getLinkProperties(NetworkAbility.translateEthernetNetworkType(type))
-								.getLinkAddresses().get(0).toString();
-						// ip2="192.168.1.149/16"
-						String[] ipArrary = ip.split("/");
-						ipString =ipArrary[0]; 
-					} else {
-						ipString = "0.0.0.0";
-					}
-				}
-				
-				
-			} catch (Exception e) {
+            mEthManager = (EthernetManager)context.getSystemService("inspur_ethernet");
+            if (mEthManager == null) {
+                Log.d(TAG, "failed to get inspur_ethernet, next to try " + Context.ETHERNET_SERVICE);
+                mEthManager = (EthernetManager)context.getSystemService(Context.ETHERNET_SERVICE);
+            }
 
-				Log.i("MARK", "Exception!! ");
-				e.printStackTrace();
-			} 
-		 
-		return ipString;
-	}
+            Log.d(TAG, "setDhcpConfig ethernetManager is " + mEthManager);
 
-	/**
-	 * NetMask
-	 * 
-	 * @return
-	 */
-	@TargetApi(Build.VERSION_CODES.L)
-	public static String getNetMask(Context context,int type) {
-		String mask = "";
-		 mConnectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-		Log.i("MARK", "getNetMask ");
-		try {
+            IpConfiguration ipConfiguration = new IpConfiguration();
+            ipConfiguration.setIpAssignment(IpConfiguration.IpAssignment.DHCP);
 
-			if (mConnectivityManager.getLinkProperties(NetworkAbility.translateEthernetNetworkType(type))!=null) {
+            mEthManager.setConfiguration(ipConfiguration);
 
-			if (mConnectivityManager.getLinkProperties(NetworkAbility.translateEthernetNetworkType(type)).getLinkAddresses().size() > 0) {
-				Log.i("MARK", "if ");
-				String ip2 = mConnectivityManager.getLinkProperties(NetworkAbility.translateEthernetNetworkType(type))
-						.getLinkAddresses().get(0).toString();
-				// ip2="192.168.1.149/16"
-				String[] prefix = ip2.split("/");
-				mask = NetUtils.getAddress(NetUtils.prefixLengthToNetmaskInt(Integer.parseInt(prefix[1])));
-			} else {
-				mask = "0.0.0.0";
-			}
-			}
-		} catch (Exception e) {
+        }catch (Exception e){
 
-			Log.i("MARK", "Exception!! ");
-			e.printStackTrace();
-		} 
-		
-		/*mEthManager = (EthernetManager) context.getSystemService(Context.ETHERNET_SERVICE);
-		try {
-			int prefixLength = mEthManager.getConfiguration(type).getStaticIpConfiguration().ipAddress.getNetworkPrefixLength();
-			mask=NetUtils.getAddress(NetUtils.prefixLengthToNetmaskInt(prefixLength));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}*/
-		return mask;
-	}
+            e.printStackTrace();
+            Log.d(TAG, "setDhcpConfig failed");
+            return;
+        }
+    }
 
-	/**
-	 * RouteAddr 网关
-	 * 
-	 * @return
-	 */
-	@TargetApi(Build.VERSION_CODES.L)
-	public static String getRouteAddr(Context context,int type) {
+    public static void setDhcpConfig(Context context, int type){
 
-		String gatetString = "0.0.0.0";
-	 	mConnectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        try {
+            Log.d(TAG, "start setDhcpConfig with type = " + type);
 
-		try {
+            mEthManager = (EthernetManager)context.getSystemService("inspur_ethernet");
+            if (mEthManager == null) {
+                Log.d(TAG, "failed to get inspur_ethernet, next to try " + Context.ETHERNET_SERVICE);
+                mEthManager = (EthernetManager)context.getSystemService(Context.ETHERNET_SERVICE);
+            }
 
-			if (mConnectivityManager.getLinkProperties(NetworkAbility.translateEthernetNetworkType(type))!=null) {
+            Log.d(TAG, "setDhcpConfig with type ethernetManager is " + mEthManager);
 
-			Log.i("MARK", "route size==="+mConnectivityManager.getLinkProperties(NetworkAbility.translateEthernetNetworkType(type)).getRoutes().size());
-			for (int i = 0; i < mConnectivityManager.getLinkProperties(NetworkAbility.translateEthernetNetworkType(type)).getRoutes().size(); i++) {
-				gatetString = mConnectivityManager.getLinkProperties(NetworkAbility.translateEthernetNetworkType(type)).getRoutes()
-						.get(i).toString();
-				Log.i("MARK", "route  "+i+" ==="+gatetString);
-			     if (gatetString.startsWith("0.0.0.0")) {
-					String[] temp=gatetString.split("->");
-					String[] gateway=temp[1].split("eth");
-					return gateway[0].trim();
-				}
-			
-			} 
-			}
-			
-		 
-			 
-			 
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		} 
-		 //	  route size===2
-		 // route  0 ===192.168.1.0/24 -> 0.0.0.0 eth0
-		//  route  1 ===0.0.0.0/0 -> 192.168.1.1 eth0
-		// 
-		
-		/*mEthManager = (EthernetManager) context.getSystemService(Context.ETHERNET_SERVICE);
-		try {
-			gatetString = mEthManager.getConfiguration(type).getStaticIpConfiguration().gateway.toString();
- 		} catch (Exception e) {
-			e.printStackTrace();
-		}*/
-		return gatetString;
+            IpConfiguration ipConfiguration = new IpConfiguration();
+            ipConfiguration.setIpAssignment(IpConfiguration.IpAssignment.DHCP);
 
-	}
+            mEthManager.setConfiguration(type, ipConfiguration);
 
-	/**
-	 * DNS
-	 * 
-	 * @return
-	 */
-	@TargetApi(Build.VERSION_CODES.L)
-	public static String getDnsAddr(Context context,int type) {
-		String dns = "";
-		 mConnectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        }catch (Exception e){
 
-		try {
-			if (mConnectivityManager.getLinkProperties(NetworkAbility.translateEthernetNetworkType(type))!=null) {
+            e.printStackTrace();
+            Log.d(TAG, "setDhcpConfig with type failed");
+            return;
+        }
+    }
 
-			if (mConnectivityManager.getLinkProperties(NetworkAbility.translateEthernetNetworkType(type)).getDnsServers().size() > 0) {
-				dns = mConnectivityManager.getLinkProperties(NetworkAbility.translateEthernetNetworkType(type)).getDnsServers().get(0)
-						.toString();
-			} else {
-				dns = "0.0.0.0";
-			}
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		// dnsStrings="/192.168.1.254"
-		if (dns.contains("/")) {
-			dns = dns.substring(1);
-		} 
-		/*mEthManager = (EthernetManager) context.getSystemService(Context.ETHERNET_SERVICE);
-		try {
-			dns = mEthManager.getConfiguration(type).getStaticIpConfiguration().dnsServers.get(0).toString();
- 		} catch (Exception e) {
-			e.printStackTrace();
-		}*/
-		return dns;
-	}
+    public static void setStaticConfig(Context context, String ip, String mask, String gateway, String dns)
+    {
+        try {
+            Log.d(TAG, "start setStaticConfig");
 
-	/**
-	 * DNS2
-	 * 
-	 * @return
-	 */
-	@TargetApi(Build.VERSION_CODES.L)
-	public static String getDns2Addr(Context context,int type) {
-		String dns2 = "";
-		 mConnectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+            mEthManager = (EthernetManager)context.getSystemService("inspur_ethernet");
+            if (mEthManager == null) {
+                Log.d(TAG, "failed to get inspur_ethernet, next to try " + Context.ETHERNET_SERVICE);
+                mEthManager = (EthernetManager)context.getSystemService(Context.ETHERNET_SERVICE);
+            }
 
-		try {
-			if (mConnectivityManager.getLinkProperties(NetworkAbility.translateEthernetNetworkType(type))!=null) {
+            Log.d(TAG, "setStaticConfig ethernetManager is " + mEthManager);
 
-			if (mConnectivityManager.getLinkProperties(NetworkAbility.translateEthernetNetworkType(type)).getDnsServers().size() > 1) {
-				dns2 = mConnectivityManager.getLinkProperties(NetworkAbility.translateEthernetNetworkType(type)).getDnsServers().get(1)
-						.toString();
-			} else {
-				dns2 = "0.0.0.0";
-			}
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		if (dns2.contains("/")) {
-			dns2 = dns2.substring(1);
-		} 
-		/*mEthManager = (EthernetManager) context.getSystemService(Context.ETHERNET_SERVICE);
-		try {
-			dns2 = mEthManager.getConfiguration(type).getStaticIpConfiguration().dnsServers.get(1).toString();
- 		} catch (Exception e) {
-			e.printStackTrace();
-		}*/
-		return dns2;
+            StaticIpConfiguration staticIpConfiguration = new StaticIpConfiguration();
 
-	}
+            //ip mask
+            InetAddress inetAddress = NetworkUtils.numericToInetAddress(ip);
+            int prefixLength = NetworkUtils.netmaskIntToPrefixLength(NetworkTools.stringToInt(mask));
+            LinkAddress linkAddress = new LinkAddress(inetAddress, prefixLength);
 
-	/**
-	 * 设置是否可用 TODO 传入参数与标准接口不同
-	 * 
-	 * @param bool
-	 * @param string
-	 * @throws Exception
-	 */
-	public static void setEnabled(boolean flag, String string) throws Exception {
+            //gateway
+            InetAddress gatewayAddress = NetworkUtils.numericToInetAddress(gateway);
 
-		/*
-		 * try { mEthManager.setEthernetEnabled(flag);; } catch (Exception e) {
-		 * L.e("设置有线网络是否可用"); throw e; }
-		 */
-		setEnabled(flag);
-	}
+            //dns
+            ArrayList<InetAddress> dnsList = new ArrayList<InetAddress>();
+            dnsList.add(NetworkUtils.numericToInetAddress(dns));
 
-	public static void setEnabled(boolean flag) {
+            staticIpConfiguration.ipAddress = linkAddress;
+            staticIpConfiguration.gateway = gatewayAddress;
+            staticIpConfiguration.dnsServers.addAll(dnsList);
 
-		// mEthManager.setEthernetEnabled(flag);
-		// ConnectivityManager.getInstance().getNetworkInfo(NetworkAbility.translateEthernetNetworkType(type)).setIsAvailable(flag);
+            IpConfiguration ipConfiguration = new IpConfiguration(IpConfiguration.IpAssignment.STATIC,
+                             IpConfiguration.ProxySettings.NONE,staticIpConfiguration,null);
 
-	}
+            mEthManager.setConfiguration(ipConfiguration);
 
-	public static void setConnectMode(Context context, String mode,int type) {
+            NetworkTools.showMessage(context,"静态IP设置成功");
+        }catch(Exception e){
 
-		mEthManager = (EthernetManager) context.getSystemService(Context.ETHERNET_SERVICE);
-		IpConfiguration ipconf = new IpConfiguration();
-		if (mode.equals(IpAssignment.DHCP.name())) {
-			ipconf.setIpAssignment(IpAssignment.DHCP);
-		} else if (mode.equals(IpAssignment.STATIC.name())) {
-			ipconf.setIpAssignment(IpAssignment.STATIC);
-		}
+            e.printStackTrace();
+            Log.d(TAG, "setStaticConfig failed");
+            return ;
+        }
+    }
 
-		mEthManager.setConfiguration(type,ipconf);
+    public static void setStaticConfig(Context context, int type, String ip, String mask, String gateway, String dns){
 
-	}
+        try {
+            Log.d(TAG, "start setStaticConfig with type = " + type);
 
-	public static void setConnectMode(Context context, IpAssignment ipAssignment,int type) {
+            mEthManager = (EthernetManager)context.getSystemService("inspur_ethernet");
+            if (mEthManager == null) {
+                Log.d(TAG, "failed to get inspur_ethernet, next to try " + Context.ETHERNET_SERVICE);
+                mEthManager = (EthernetManager)context.getSystemService(Context.ETHERNET_SERVICE);
+            }
 
-		mEthManager = (EthernetManager) context.getSystemService(Context.ETHERNET_SERVICE);
-		IpConfiguration ipconf = new IpConfiguration();
-		ipconf.setIpAssignment(ipAssignment);
-		mEthManager.setConfiguration(type,ipconf);
+            Log.d(TAG, "setStaticConfig with type ethernetManager is " + mEthManager);
 
-	}
+            StaticIpConfiguration staticIpConfiguration = new StaticIpConfiguration();
 
-	 
+            //ip mask
+            InetAddress inetAddress = NetworkUtils.numericToInetAddress(ip);
+            int prefixLength = NetworkUtils.netmaskIntToPrefixLength(NetworkTools.stringToInt(mask));
+            LinkAddress linkAddress = new LinkAddress(inetAddress, prefixLength);
 
-	public static void setDHCPConfig(Context context,int type) {
-		mEthManager = (EthernetManager) context.getSystemService(Context.ETHERNET_SERVICE);
-		IpConfiguration ipconf = new IpConfiguration();
-		ipconf.setIpAssignment(IpAssignment.DHCP);
+            //gateway
+            InetAddress gatewayAddress = NetworkUtils.numericToInetAddress(gateway);
 
-		mEthManager.setConfiguration(type,ipconf);
-	}
+            //dns
+            ArrayList<InetAddress> dnsList = new ArrayList<InetAddress>();
+            dnsList.add(NetworkUtils.numericToInetAddress(dns));
 
-	public static void setStaticConfig(Context context, String ipAddress, String netmask, String gateway, String dns1,
-			String dns2,int type) {
-		mEthManager = (EthernetManager) context.getSystemService(Context.ETHERNET_SERVICE);
-		//mConnectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+            staticIpConfiguration.ipAddress = linkAddress;
+            staticIpConfiguration.gateway = gatewayAddress;
+            staticIpConfiguration.dnsServers.addAll(dnsList);
 
-	
-		Log.i("MARK", "setStaticConfig  00!!");
-		StaticIpConfiguration staticIpConfiguration = new StaticIpConfiguration();
-		Log.i("MARK", "ipAddress==" + ipAddress + " netmask==" + netmask + " gateway==" + gateway + " dns1==" + dns1
-				+ " dns2==" + dns2);
-		if (!Tools.matchIP(ipAddress)) {
-			Toast.makeText(context, "IP 不合法", Toast.LENGTH_SHORT).show();
-		}
-		if (!Tools.matchIP(netmask)) {
-			Toast.makeText(context, "子网掩码 不合法", Toast.LENGTH_SHORT).show();
-		}
-		if (!Tools.matchIP(gateway)) {
-			Toast.makeText(context, "网关 不合法", Toast.LENGTH_SHORT).show();
-		}
-		if (!Tools.matchIP(dns1)) {
-			Toast.makeText(context, "首选DNS 不合法", Toast.LENGTH_SHORT).show();
-		}
-		
+            IpConfiguration ipConfiguration = new IpConfiguration(IpConfiguration.IpAssignment.STATIC,
+                             IpConfiguration.ProxySettings.NONE,staticIpConfiguration,null);
 
-		if (Tools.matchIP(ipAddress) && Tools.matchIP(netmask) && Tools.matchIP(gateway) && Tools.matchIP(dns1)) {
-			InetAddress ip = NetUtils.intToInetAddress(NetUtils.stringToInt(ipAddress));
-			InetAddress gateAddress = NetUtils.intToInetAddress(NetUtils.stringToInt(gateway));
-			InetAddress dns1Address = NetUtils.intToInetAddress(NetUtils.stringToInt(dns1));
-			Log.i("MARK", "if  InetAddress   ip==="+ip+"  gateAddress==="+gateAddress+"  dns1Address==="+dns1Address);
-			ArrayList<InetAddress> dnsList = new ArrayList<InetAddress>();
-			dnsList.add(dns1Address);
-			if (Tools.matchIP(dns2)) {
-				InetAddress dns2Address = NetUtils.intToInetAddress(NetUtils.stringToInt(dns2));
-				dnsList.add(dns2Address);
-				Log.i("MARK", "if  dns2Address==="+ dns2Address );
-			}
-			
+            mEthManager.setConfiguration(type, ipConfiguration);
 
-			Log.i("MARK", "if  11!!");
-			
-			
+            NetworkTools.showMessage(context,"静态IP设置成功");
+        }catch(Exception e){
 
-			//ArrayList<LinkAddress> addressList = new ArrayList<LinkAddress>();
-			int prefixLength = NetUtils.netmaskIntToPrefixLength(NetUtils.stringToInt(netmask));
-			Log.i("MARK", "if  netmask==="+netmask+"  prefixLength==="+prefixLength);
+            e.printStackTrace();
+            Log.d(TAG, "setStaticConfig with type failed");
+            return ;
+        }
+    }
 
-			
-			LinkAddress linkAddress = new LinkAddress(ip, prefixLength);
-			//addressList.add(linkAddress);
-			staticIpConfiguration.ipAddress = linkAddress;
-			staticIpConfiguration.gateway = gateAddress;
-			staticIpConfiguration.dnsServers.addAll(dnsList);
-			
-			try {
-				//mConnectivityManager.getLinkProperties(NetworkAbility.translateEthernetNetworkType(type)).setLinkAddresses(addressList);
-				//mConnectivityManager.getLinkProperties(NetworkAbility.translateEthernetNetworkType(type)).setDnsServers(dnsList);
-				 
-				Log.i("MARK", "if  22 staticIpConfiguration=="+staticIpConfiguration);
-				IpConfiguration ipconf = new IpConfiguration(IpAssignment.STATIC,ProxySettings.NONE,staticIpConfiguration,null);
-				/*ipconf.setStaticIpConfiguration(staticIpConfiguration);
-				Log.i("MARK", "if  33!!");
-				ipconf.setIpAssignment(IpAssignment.STATIC);*/
-				
-				
-				/*try {
-					 
-					Class<?> cls =  Class.forName("com.android.server.ethernet.EthernetConfigStore");
-					//Object obj= c.newInstance();
-					Method method = cls.getDeclaredMethod("writeIpAndProxyConfigurations", new Class[] {IpConfiguration.class});
-					method.invoke(cls.newInstance(), ipconf);
-					 
-				} catch (Exception e) {
-					e.printStackTrace();
-				}*/
-				// mEthernetConfigStore = new EthernetConfigStore();
-				mEthManager.setConfiguration(type,ipconf);
-				Log.i("MARK", "if  44  setConfiguration ipconf=="+ipconf);
-			} catch (Exception e) {
-				Log.i("MARK", "if  Exception!!");
-				e.printStackTrace();
-			}
-		} else {
+    public static String getConnectModeWithNoType(Context context)
+    {
+        String modeString = "";
 
-		}
+        EthernetManager ethernetManager = (EthernetManager)context.getSystemService("inspur_ethernet");
+        if (ethernetManager == null) {
+            Log.d(TAG, "failed to get inspur_ethernet, next to try " + Context.ETHERNET_SERVICE);
+            ethernetManager = (EthernetManager)context.getSystemService(Context.ETHERNET_SERVICE);
+        }
 
-	}
+        try{
+            modeString = ethernetManager.getConfiguration().getIpAssignment().name();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
-	/**
-	 * 保存网络设置
-	 * 
-	 * @param auto
-	 * @param ipAddress
-	 * @param netmask
-	 * @param gateway
-	 * @param dns1
-	 * @param dns2
-	 * @throws Exception
-	 */
-	public static void configEthernetV4(Context context, boolean auto, String ipAddress, String netmask,
-			String gateway, String dns1, String dns2,int type) throws Exception {
-		 
-		if (auto) {
-			setDHCPConfig(context,type);
-		} else {
-			Log.i("MARK", "setStaticConfig!");
-			setStaticConfig(context, ipAddress, netmask, gateway, dns1, dns2,type);
-		}
-	}
+        Log.d(TAG, "get the connect mode is " + modeString);
+
+        return modeString;
+    }
+
+    public static String getConnectModeWithType(Context context, int type) {
+
+        String modeString = "";
+
+        EthernetManager ethernetManager = (EthernetManager)context.getSystemService("inspur_ethernet");
+        if (ethernetManager == null) {
+            Log.d(TAG, "failed to get inspur_ethernet, next to try " + Context.ETHERNET_SERVICE);
+            ethernetManager = (EthernetManager)context.getSystemService(Context.ETHERNET_SERVICE);
+        }
+
+        try {
+            modeString = ethernetManager.getConfiguration(type).getIpAssignment().name();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        Log.d(TAG, "get the connect mode is " + modeString);
+
+        return modeString;
+    }
+
+    public static String getMac(){
+
+        //get prop value
+        String macString = SystemProperties.get("ro.mac0", "");
+        if (true == macString.equals("") || macString == null){
+
+            return "ff:ff:ff:ff:ff:ff";
+        }else{
+            return macString;
+        }
+    }
+
+    private static String getIpAddressWithEthernetType(Context context, int ethernet_type){
+
+        String ipAddress = "0.0.0.0";
+        mConnectivityManager = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (mConnectivityManager == null){
+            Log.d(TAG, "mConnectivityManager is null");
+            return ipAddress;
+        }
+
+        LinkProperties linkProperties =  mConnectivityManager.getLinkProperties(ethernet_type);
+        if (linkProperties == null){
+
+            Log.d(TAG, "linkProperties is null");
+            return ipAddress;
+        }
+
+        //Log.d(TAG, "getIpAddress linkProperties is " + linkProperties);
+
+        try{
+            Class<?> c = Class.forName("android.net.LinkProperties");
+            Method method = c.getMethod("getLinkAddresses");
+
+            String str = method.getReturnType().toString();
+            List<LinkAddress> list_addr = null;
+            if (str.equals("interface java.util.Collection")){
+
+                Object object = method.invoke(linkProperties);
+                Collection coll = (Collection)object;
+
+                list_addr = new ArrayList(coll);
+            }else{
+
+                list_addr = new ArrayList(mConnectivityManager.getLinkProperties(ethernet_type).getLinkAddresses());
+            }
+
+            if(list_addr.size() <= 0) {
+
+                Log.e(TAG, "failed to get ipaddr");
+                return ipAddress;
+            }
+
+            for(LinkAddress linkAddress : list_addr) {
+                if(linkAddress.getAddress() instanceof Inet4Address) {
+
+                    InetAddress inetAddress = linkAddress.getAddress();
+                    ipAddress = inetAddress.getHostAddress();
+                    Log.d(TAG, "getIpAddress ip is " + ipAddress);
+                    break;
+                }
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+            return ipAddress;
+        }
+
+        return ipAddress;
+    }
+
+    public static String getIpAddress(Context context, int type) {
+
+        int ethernet_type = 0;
+
+        if (type == -1){
+
+            ethernet_type = ConnectivityManager.TYPE_ETHERNET;
+        }else if (type >= NetworkAbility.NETWORK_TYPE_WAN && type < NetworkAbility.NETWORK_TYPE_MAX){
+
+            ethernet_type = NetworkAbility.translateEthernetNetworkType(type);
+        }else{
+
+            return null;
+        }
+
+        return getIpAddressWithEthernetType(context, ethernet_type);
+    }
+
+    public static String getNetMaskWithEthernetType(Context context, int ethernet_type) {
+
+        String NetMask = "0.0.0.0";
+
+        mConnectivityManager = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (mConnectivityManager == null){
+            Log.d(TAG, "m_connectivityManager is null");
+            return NetMask;
+        }
+
+        LinkProperties linkProperties = mConnectivityManager.getLinkProperties(ethernet_type);
+        if (linkProperties == null){
+
+            Log.d(TAG, "linkProperties is null");
+            return NetMask;
+        }
+
+        //Log.d(TAG, "getNetMask linkProperties is " + linkProperties);
+
+        try{
+            Class<?> c = Class.forName("android.net.LinkProperties");
+            Method method = c.getMethod("getLinkAddresses");
+
+            String str = method.getReturnType().toString();
+            List<LinkAddress> list_NetMask = null;
+            if (str.equals("interface java.util.Collection")){
+
+                Object object = method.invoke(linkProperties);
+                Collection coll = (Collection)object;
+
+                list_NetMask = new ArrayList(coll);
+
+            }else{
+                list_NetMask = new ArrayList(mConnectivityManager.getLinkProperties(ethernet_type).getLinkAddresses());
+            }
+
+            if(list_NetMask.size() <= 0) {
+
+                Log.e(TAG, "failed to get NetMask");
+                return NetMask;
+            }
+
+            for(LinkAddress linkAddress : list_NetMask) {
+                if(linkAddress.getAddress() instanceof Inet4Address) {
+
+                    int prefixLength = linkAddress.getNetworkPrefixLength();
+                    NetMask = NetworkTools.intToString(NetworkUtils.prefixLengthToNetmaskInt(prefixLength));
+                    Log.d(TAG, "getNetMask NetMask is " + NetMask);
+                    break;
+                }
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+            return NetMask;
+        }
+
+        return NetMask;
+    }
+
+    public static String getNetMask(Context context, int type) {
+
+        int ethernet_type = 0;
+
+        if (type == SingleEthernetActivity.singleEthernetType) {
+
+            ethernet_type = ConnectivityManager.TYPE_ETHERNET;
+        } else if (type >= NetworkAbility.NETWORK_TYPE_WAN && type < NetworkAbility.NETWORK_TYPE_MAX) {
+
+            ethernet_type = NetworkAbility.translateEthernetNetworkType(type);
+        } else {
+
+            return null;
+        }
+
+        return getNetMaskWithEthernetType(context, ethernet_type);
+    }
+
+    public static String getGateWayWithEthernetType(Context context, int ethernet_type){
+
+        String gateWay = "0.0.0.0";
+        mConnectivityManager = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (mConnectivityManager == null){
+            Log.d(TAG, "m_connectivityManager is null");
+            return gateWay;
+        }
+
+        LinkProperties linkProperties = mConnectivityManager.getLinkProperties(ethernet_type);
+        if (linkProperties == null){
+
+            Log.d(TAG, "linkProperties is null");
+            return gateWay;
+        }
+
+        //Log.d(TAG, "getGateWay linkProperties is " + linkProperties);
+
+        try{
+            Class<?> c = Class.forName("android.net.LinkProperties");
+            Method method = c.getMethod("getRoutes");
+
+            String str = method.getReturnType().toString();
+            List<RouteInfo> list_routeInfo = null;
+            if (str.equals("interface java.util.Collection")){
+
+                Object object = method.invoke(linkProperties);
+                Collection coll = (Collection)object;
+
+                list_routeInfo = new ArrayList(coll);
+
+            }else{
+                list_routeInfo = new ArrayList(mConnectivityManager.getLinkProperties(ethernet_type).getRoutes());
+            }
+
+            if(list_routeInfo.size() <= 0) {
+
+                Log.e(TAG, "failed to get NetMask");
+                return gateWay;
+            }
+
+            for(RouteInfo routeInfo : list_routeInfo){
+
+                InetAddress inetAddress = routeInfo.getGateway();
+                if(inetAddress instanceof Inet4Address) {
+                    String tmp_gateway = inetAddress.getHostAddress();
+                    if(routeInfo.isDefaultRoute() || !tmp_gateway.equals("0.0.0.0")) {
+                        gateWay = tmp_gateway;
+                        Log.d(TAG, "getGateway gateway is " + gateWay);
+                        break;
+                    }
+                }
+            }
+
+        }catch(Exception e){
+            e.printStackTrace();
+            return gateWay;
+        }
+
+        return gateWay;
+    }
+
+    public static String getGateWay(Context context, int type)
+    {
+        int ethernet_type = 0;
+
+        if (type == SingleEthernetActivity.singleEthernetType) {
+
+            ethernet_type = ConnectivityManager.TYPE_ETHERNET;
+
+        } else if (type >= NetworkAbility.NETWORK_TYPE_WAN && type < NetworkAbility.NETWORK_TYPE_MAX) {
+
+            ethernet_type = NetworkAbility.translateEthernetNetworkType(type);
+        } else {
+
+            return null;
+        }
+
+        return getGateWayWithEthernetType(context, ethernet_type);
+    }
+
+
+    //TODO: 完善此接口，有时需要获取两个dns
+    private static String getDnsWithEthernetType(Context context, int ethernet_type){
+
+        String dns = "0.0.0.0";
+        mConnectivityManager = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (mConnectivityManager == null){
+            Log.d(TAG, "m_connectivityManager is null");
+            return dns;
+        }
+
+        LinkProperties linkProperties = mConnectivityManager.getLinkProperties(ethernet_type);
+        if (linkProperties == null){
+
+            Log.d(TAG, "linkProperties is null");
+            return dns;
+        }
+
+        //Log.d(TAG, "getDns linkProperties is " + linkProperties);
+
+        try{
+            Class<?> c = Class.forName("android.net.LinkProperties");
+            Method method = c.getMethod("getDnsServers");
+
+            String str = method.getReturnType().toString();
+            List<InetAddress> list_dns = null;
+            if (str.equals("interface java.util.Collection")){
+
+                Object object = method.invoke(linkProperties);
+                Collection coll = (Collection)object;
+
+                list_dns = new ArrayList(coll);
+
+            }else{
+                list_dns = mConnectivityManager.getLinkProperties(ethernet_type).getDnsServers();
+            }
+
+            if(list_dns.size() <= 0) {
+
+                Log.e(TAG, "failed to get NetMask");
+                return dns;
+            }
+
+            for (InetAddress inetAddress : list_dns){
+
+                if (inetAddress instanceof Inet4Address){
+
+                    dns = inetAddress.getHostAddress();
+                    Log.d(TAG, "getDns dns is " + dns);
+                    break;
+                }
+            }
+
+        }catch(Exception e){
+            e.printStackTrace();
+            return dns;
+        }
+
+        return dns;
+    }
+
+    public static String getDns(Context context, int type)
+    {
+        int ethernet_type = 0;
+
+        if (type == SingleEthernetActivity.singleEthernetType) {
+
+            ethernet_type = ConnectivityManager.TYPE_ETHERNET;
+        } else if (type >= NetworkAbility.NETWORK_TYPE_WAN && type < NetworkAbility.NETWORK_TYPE_MAX) {
+
+            ethernet_type = NetworkAbility.translateEthernetNetworkType(type);
+        } else {
+
+           return null;
+        }
+
+        return getDnsWithEthernetType(context, ethernet_type);
+    }
 }
