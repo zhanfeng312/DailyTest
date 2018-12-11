@@ -7,6 +7,7 @@ char g_buf[BUFF_SIZE] = { 0 };
 void print_buf(char *buf)
 {
     printf("%s\n", buf);
+    printf("len is %d\n", strlen(buf));
 }
 
 void test_gets(void)
@@ -24,6 +25,7 @@ void test_fgets(void)
 {
     FILE *fp = NULL;
     char *p = NULL;
+    int len = -1;
 
     if ((fp = fopen("b.txt", "r")) == NULL) {
         printf("b.txt not exist!\n");
@@ -43,6 +45,9 @@ void test_fgets(void)
             }
         }
         else {
+            if ((len = strlen(g_buf)) > 0 && *(g_buf + len - 1) == '\n') {
+                *(g_buf + len - 1) = 0;
+            }
             print_buf(g_buf);
         }
     }
@@ -116,11 +121,11 @@ int main(int argc, char *argv[])
     /*printf("-------------test gets!-----------\n");
     test_gets();*/
 
-    /*printf("-------------test fgets-----------\n");
-    test_fgets();*/
+    /* printf("-------------test fgets-----------\n");
+     test_fgets();*/
 
     /*printf("----------test scanf----------------\n");
-     test_scanf();*/
+    test_scanf();*/
 
      /*printf("------test sscanf---------------------\n ");
      test_sscanf();*/
