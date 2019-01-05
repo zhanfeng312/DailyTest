@@ -28,13 +28,34 @@ void test_strtok_r()
 	printf("%s:%s\n", pURL, pSting);
 }
 
+void test()
+{
+    int aOperID[8];
+    char aOperator[] = "2;5311,;10,;";
+    char *pToken = strtok(aOperator, ";");
+    int i = 0;
+    pToken = strtok(NULL, ";");
+
+    while (pToken)
+    {
+        printf("%s\n", pToken);
+        aOperID[i] = atoi(pToken);
+        printf("%d\n", aOperID[i]);
+        pToken = strtok(NULL, ";");
+        i++;
+    }
+
+    printf("i = %d\n", i);
+}
+
 int main(int argc, char *argv[])
 {
-	test_strdup();
 
-	test_strtok_r();
+    test();
 
-	getchar();
+    /*test_strdup();
+
+    test_strtok_r();*/
 
     return 0;
 }
