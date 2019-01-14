@@ -1,0 +1,59 @@
+
+# Copyright (c) Inspur Group Co., Ltd. Unpublished
+#
+# Inspur Group Co., Ltd.
+# Proprietary & Confidential
+#
+# This source code and the algorithms implemented therein constitute
+# confidential information and may comprise trade secrets of Inspur
+# or its associates, and any use thereof is subject to the terms and
+# conditions of the Non-Disclosure Agreement pursuant to which this
+# source code was originally received.
+
+#
+# This is an ini file of configurs
+#
+
+[Cvs]
+
+cvs_usr      =liuzhiming ;
+cvs_passwd   =liuzhiming ;cvs服务器的用户名和密码
+
+[Svn]
+
+svn_usr      =liuzhiming ;
+svn_passwd   =liuzhiming ;svn服务器的用户名和密码
+
+[Git]
+
+# git服务器采用公钥认证，可不用密码
+# git_usr      =inspur ;
+# git_passwd   =inspur ;git服务器的用户名和密码
+
+[MySQL]
+
+MySQL_usr    =inspur ;
+MySQL_passwd =inspur123456 ;
+host         =10.8.10.192 ;
+database     =JOBS ;
+tablename    =job ;MySQL数据库的用户名，密码，数据库名，表名
+
+[Os]
+
+os           =linux ;服务器的操作系统
+
+[Path]
+
+# out_path   =/home/output ;编译结果输出路径,由redmine给出
+compile_path =/home/builds ;编译路径
+
+[Server]
+
+server_type  =master ;服务器类型：主master/子slave
+hostname     =server master ;服务器名
+slaveIP      =http://10.8.12.27 ;子服务器IP
+slaveDiretory=/opt/ioa ;子服务器apache根目录
+
+[Process]
+
+process_max  =5 ;最大进程数
