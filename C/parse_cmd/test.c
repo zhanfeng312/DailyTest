@@ -1,11 +1,17 @@
 #include <stdio.h>
 #include <getopt.h>
 
-char *const short_options = "Ml:";
-struct option long_options[] = {
-    {"opt125_auth_60", no_argument, NULL, 'M'},
+char *const short_options = "l:m"; //定义短选项
+struct option long_options[] = { //定义长选项
+    {"name", no_argument, NULL, 'm'},
     {0, 0, 0, 0},
 };
+
+/*
+int getopt_long(int argc, char * const argv[], const char *optstring, const struct option *longopts, int *longindex);
+longindex
+    longindex表示长选项在longopts中的位置
+*/
 
 int main(int argc, char *argv[])
 {
@@ -14,13 +20,14 @@ int main(int argc, char *argv[])
     {
         switch (c)
         {
-        case 'M':
+        case 'm':
             printf("This is name.\n");
             break;
         case 'l':
             printf("argument value is %s\n", optarg);
             break;
         case '?':
+            printf("unknown option");
             break;
         }
     }
