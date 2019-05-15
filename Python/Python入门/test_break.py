@@ -1,9 +1,9 @@
 #!/usr/bin/python
 # -*- coding:utf-8 -*-
-#ÍË³öËùÓĞÑ­»·
+#ï¿½Ë³ï¿½ï¿½ï¿½ï¿½ï¿½Ñ­ï¿½ï¿½
 
 while True:
-	s = raw_input("Enter s srting : ")
+	s = input("Enter s srting : ")
 	if s == "quit":
 		break
 	

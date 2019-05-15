@@ -36,7 +36,7 @@ if n1 < n2:
 else:
     print("no")
 
-inp = raw_input("请输入数字:")
+inp = input("请输入数字:")
 if inp == "1":
 	print("1")
 elif inp == "2":
