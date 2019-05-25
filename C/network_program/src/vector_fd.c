@@ -7,12 +7,13 @@
 static void encapacity(VectorFD *vfd)
 {
     if (vfd->counter >= vfd->max_counter) {
-        int *fds =
-            (int*)calloc(vfd->counter + 5, sizeof(int));
+
+        int *fds = (int*)calloc(vfd->counter + 5, sizeof(int));
         assert(fds != NULL);
 
         memcpy(fds, vfd->fd, sizeof(int) * vfd->counter);
         free(vfd->fd);
+
         vfd->fd = fds;
         vfd->max_counter += 5;
     }
@@ -20,15 +21,18 @@ static void encapacity(VectorFD *vfd)
 
 static int indexof(VectorFD *vfd, int fd)
 {
-    int i = 0;
-    for (; i < vfd->counter; i++) {
-        if (vfd->fd[i] == fd) return i;
+    assert(vfd != NULL);
+
+    int index = 0;
+    for (; index < vfd->counter; index++) {
+        if (vfd->fd[index] == fd)
+            return index;
     }
 
     return -1;
 }
 
-VectorFD *cerate_vector_fd(void)
+VectorFD*   create_vector_fd()
 {
     VectorFD *vfd = (VectorFD*)calloc(1, sizeof(VectorFD));
     assert(vfd != NULL);
@@ -37,39 +41,51 @@ VectorFD *cerate_vector_fd(void)
     assert(vfd->fd != NULL);
 
     vfd->counter = 0;
-    vfd->max_counter = 0;
+    vfd->max_counter = 5;
+    return vfd;
 }
 
-void  destory_vector_fd(VectorFD *vfd)
+void    destroy_vectot_fd(VectorFD *vfd)
 {
     assert(vfd != NULL);
     free(vfd->fd);
     free(vfd);
 }
 
-int  get_fd(VectorFD *vfd, int index)
+int     get_fd(VectorFD *vfd, int index)
 {
     assert(vfd != NULL);
+
     if (index < 0 || index > vfd->counter - 1)
         return 0;
     return vfd->fd[index];
 }
 
-void  remove_fd(VectorFD *vfd, int fd)
+void    remove_fd(VectorFD *vfd, int fd)
 {
     assert(vfd != NULL);
+
     int index = indexof(vfd, fd);
-    if (index == -1) return;
-    int i = index;
-    for (; i < vfd->counter - 1; i++) {
-        vfd->fd[i] = vfd->fd[i + 1];
+
+    if (index == -1)
+    {
+        return;
     }
-    vfd->counter--;
+    else
+    {
+        int  i = index;
+        for (; i < vfd->counter - 1; i++)
+            vfd->fd[i] = vfd->fd[i++];
+        vfd->counter -= 1;
+    }
 }
 
-void  add_fd(VectorFD *vfd, int fd)
+void    add_fd(VectorFD *vfd, int fd)
 {
     assert(vfd != NULL);
+
     encapacity(vfd);
+
     vfd->fd[vfd->counter++] = fd;
 }
+
