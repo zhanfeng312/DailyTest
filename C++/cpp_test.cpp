@@ -2,7 +2,11 @@
 
 Test::Test() : m_b(15)
 {
-   
+
 }
 
-Test::~Test() {}
+Test::~Test()
+{
+
+}
+

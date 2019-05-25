@@ -4,7 +4,7 @@
 #define BUFF_SIZE  (64)
 char g_buf[BUFF_SIZE] = { 0 };
 
-void print_buf(char *buf)
+void print(char *buf)
 {
     printf("%s\n", buf);
     printf("len is %d\n", strlen(buf));
@@ -12,13 +12,11 @@ void print_buf(char *buf)
 
 void test_gets(void)
 {
-   gets(g_buf);
+    gets(g_buf);
     //gets 函数没有限制它读取长度，一般不用
     //gets()函数丢弃换行符('\n')，取而代之的是以'\0'结尾。
 
-    print_buf(g_buf);
-
-    printf("buf is %s, len is %d\n", g_buf, strlen(g_buf));
+    print(g_buf);
 }
 
 void test_fgets(void)
@@ -48,7 +46,7 @@ void test_fgets(void)
             if ((len = strlen(g_buf)) > 0 && *(g_buf + len - 1) == '\n') {
                 *(g_buf + len - 1) = 0;
             }
-            print_buf(g_buf);
+            print(g_buf);
         }
     }
 
@@ -112,7 +110,7 @@ void test_sscanf(void)
 		sscanf("hello, world", "%*s%s", buf);
 		printf("%s\n", buf);
 		结果为：world
-	PS. %*s表示第一个匹配到的%s被过滤掉，即hello被过滤了，如果没有空格则结果为NULL。
+	%*s表示第一个匹配到的%s被过滤掉，即hello被过滤了，如果没有空格则结果为NULL。
 #endif
 }
 
