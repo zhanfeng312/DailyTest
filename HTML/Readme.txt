@@ -1,1 +1,0 @@
-js_test.html：测试js接口的页面，需改名为index.html
