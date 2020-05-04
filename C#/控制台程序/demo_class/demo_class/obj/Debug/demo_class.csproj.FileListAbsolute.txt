@@ -1,5 +1,0 @@
-E:\MyProjects\VS2015 Project\demo_class\demo_class\demo_class\bin\Debug\demo_class.exe
-E:\MyProjects\VS2015 Project\demo_class\demo_class\demo_class\bin\Debug\demo_class.pdb
-E:\MyProjects\VS2015 Project\demo_class\demo_class\demo_class\obj\Debug\demo_class.csprojResolveAssemblyReference.cache
-E:\MyProjects\VS2015 Project\demo_class\demo_class\demo_class\obj\Debug\demo_class.exe
-E:\MyProjects\VS2015 Project\demo_class\demo_class\demo_class\obj\Debug\demo_class.pdb
