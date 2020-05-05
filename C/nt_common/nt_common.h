@@ -9,11 +9,9 @@
  * or its associates, and any use thereof is subject to the terms and
  * conditions of the Non-Disclosure Agreement pursuant to which this
  * source code was originally received.
- */ 
-
-
-#ifndef __NT_COMMOM_H_
-#define __NT_COMMOM_H_
+ */
+#ifndef __NT_COMMOM_H__
+#define __NT_COMMOM_H__
 
 //config before include _nt_common.h
 //example:
@@ -47,7 +45,10 @@
 #define NT_LOG_LVL_DEBUG                       4
 #define NT_LOG_LVL_VERBOSE                     5
 
-
+#define MY_LOG(fmt, ...) \
+    do { \
+        printf("%s %s %d: "fmt"\n", __FILE__, __func__, __LINE__, ##__VA_ARGS__); \
+    } while (0);
 
 #ifdef __ANDROID__
 	#ifndef NT_LOG_LOGCAT_DISABLE
@@ -248,28 +249,28 @@
 
 
 
-/** A compile time assertion check. 
- * 
+/** A compile time assertion check.
+ *
  *  Validate at compile time that the predicate is true without
- *  generating code. This can be used at any point in a source file 
- *  where typedef is legal. 
- * 
- *  On success, compilation proceeds normally. 
- * 
- *  On failure, attempts to typedef an array type of negative size. The 
- *  offending line will look like 
- *      typedef assertion_failed_file_h_42[-1] 
- *  where file is the content of the second parameter which should 
- *  typically be related in some obvious way to the containing file 
- *  name, 42 is the line number in the file on which the assertion 
- *  appears, and -1 is the result of a calculation based on the 
- *  predicate failing. 
- * 
- *  \param predicate The predicate to test. It must evaluate to 
- *  something that can be coerced to a normal C boolean. 
- * 
- *  \param file A sequence of legal identifier characters that should 
- *  uniquely identify the source file in which this condition appears. 
+ *  generating code. This can be used at any point in a source file
+ *  where typedef is legal.
+ *
+ *  On success, compilation proceeds normally.
+ *
+ *  On failure, attempts to typedef an array type of negative size. The
+ *  offending line will look like
+ *      typedef assertion_failed_file_h_42[-1]
+ *  where file is the content of the second parameter which should
+ *  typically be related in some obvious way to the containing file
+ *  name, 42 is the line number in the file on which the assertion
+ *  appears, and -1 is the result of a calculation based on the
+ *  predicate failing.
+ *
+ *  \param predicate The predicate to test. It must evaluate to
+ *  something that can be coerced to a normal C boolean.
+ *
+ *  \param file A sequence of legal identifier characters that should
+ *  uniquely identify the source file in which this condition appears.
  */
 
 #define NT_CASSERT(predicate, file) _impl_CASSERT_LINE(predicate,__LINE__,file)
@@ -331,4 +332,4 @@ typedef char _impl_PASTE(assertion_failed_##file##_,line)[2*!!(predicate)-1];
 	BUILD_MONTH_CH0, BUILD_MONTH_CH1, BUILD_DAY_CH0, BUILD_DAY_CH1)
 
 
-#endif//__NT_COMMOM_H_
+#endif //__NT_COMMOM_H__
