@@ -5,7 +5,7 @@
 
 extern char **environ;
 
-void show_env()
+void show_env(void)
 {
     int i = 0;
     char *env = NULL;
@@ -17,14 +17,12 @@ void show_env()
 
 int main(int argc, char *argv[], char *envp[])
 {
-    /*
     int i = 0;
     char *env = NULL;
     while((env = envp[i]) != NULL) {
         printf("%s\n", env);
         i++;
     }
-    */
 
     show_env();
     printf("-----------------------\n");

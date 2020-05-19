@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <fcntl.h>
 
-//¶¨Òå½ø³ÌµÄÖÕÖ¹º¯Êı
+//å®šä¹‰è¿›ç¨‹çš„ç»ˆæ­¢å‡½æ•°
 void term_fun1(void)
 {
     printf("first term function\n");
@@ -28,24 +28,21 @@ int main(int argc, char *argv[])
         exit(1);
     }
 
-    //ÏòÄÚºËµÇ¼ÇÖÕÖ¹º¯Êı
+    //å‘å†…æ ¸ç™»è®°ç»ˆæ­¢å‡½æ•°
     atexit(term_fun1);
     atexit(term_fun2);
     atexit(term_fun3);
 
     FILE *fp = fopen(argv[1], "w");
-    fprintf(fp, "hello iotek");//È«»º´æ
+    fprintf(fp, "hello iotek");//å…¨ç¼“å­˜
 
     if (!strcmp(argv[2], "exit")) {
-        exit(0);//±ê×¼CµÄ¿âº¯Êı
-    }
-    else if (!strcmp(argv[2], "_exit")) {
-        _exit(0);//ÏµÍ³µ÷ÓÃ
-    }
-    else if (!strcmp(argv[2], "return")) {
+        exit(0);//æ ‡å‡†Cçš„åº“å‡½æ•°
+    } else if (!strcmp(argv[2], "_exit")) {
+        _exit(0);//ç³»ç»Ÿè°ƒç”¨
+    } else if (!strcmp(argv[2], "return")) {
         return 0;
-    }
-    else {
+    } else {
         fprintf(stderr, "usage: %s file [exit|_exit|return]\n", argv[0]);
     }
 }

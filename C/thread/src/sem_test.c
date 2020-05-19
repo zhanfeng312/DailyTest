@@ -3,28 +3,26 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-//´´½¨a b c£¬Ö´ĞĞ b a c
-
-//¶¨ÒåÏß³ÌĞÅºÅÁ¿
+//å®šä¹‰çº¿ç¨‹ä¿¡å·é‡
 sem_t sem1;
 sem_t sem2;
 
-void* a_fn(void *arg)
+void *a_fn(void *arg)
 {
-	sem_wait(&sem1);
 	printf("thread a running!\n");
-	sem_post(&sem2);
-	return (void*)0;
-}
-
-void* b_fn(void *arg)
-{
-	printf("thread b running!\n");
 	sem_post(&sem1);
 	return (void*)0;
 }
 
-void* c_fn(void *arg)
+void *b_fn(void *arg)
+{
+    sem_wait(&sem1);
+	printf("thread b running!\n");
+	sem_post(&sem2);
+	return (void*)0;
+}
+
+void *c_fn(void *arg)
 {
 	sem_wait(&sem2);
 	printf("thread c running!\n");
@@ -36,7 +34,7 @@ int main(void)
 	int err;
 	pthread_t a, b, c;
 
-	//Ïß³ÌĞÅºÅÁ¿³õÊ¼»¯£¬³õÖµÎª0
+	//çº¿ç¨‹ä¿¡å·é‡åˆå§‹åŒ–ï¼Œåˆå€¼ä¸º0
 	sem_init(&sem1, 0, 0);
 	sem_init(&sem2, 0, 0);
 
@@ -54,7 +52,7 @@ int main(void)
 	pthread_join(b, NULL);
 	pthread_join(c, NULL);
 
-	//Ïú»ÙÏß³ÌĞÅºÅÁ¿
+	//é”€æ¯çº¿ç¨‹ä¿¡å·é‡
 	sem_destroy(&sem1);
 	sem_destroy(&sem2);
 
