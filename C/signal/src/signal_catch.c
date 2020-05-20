@@ -2,8 +2,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-//定义信号处理函数
-//signo表示信号值
+//定义信号处理函数, signo表示信号值
 void sig_handler(int signo)
 {
     printf("pid: %d, signal %d occured\n", getpid(), signo);
@@ -11,7 +10,6 @@ void sig_handler(int signo)
 
 int main(void)
 {
-    //信号的默认动作杀死进程
 #if 1
     //向内核登记信号处理函数以及信号值
     if (signal(SIGTSTP, sig_handler) == SIG_ERR) { //ctrl + z
@@ -38,7 +36,7 @@ int main(void)
         perror("signal sigusr2 error");
     }
 
-    //SIGKILL, SIGSTOP不能被忽略, 也不能被捕获
+    //SIGKILL, SIGSTOP不能被忽略, 也不能被捕获，此时会报error
     if (signal(SIGKILL, sig_handler) == SIG_ERR) {
         perror("signal sigkill error");
     }
@@ -46,21 +44,14 @@ int main(void)
         perror("signal sigstop error");
     }
 
-    int exist = kill(getpid(), 0); //判断该进程是否存在
-    printf("process exist: %d\n", exist);
-
     int i = 0;
     while (i < 20) {
         printf("%d running %d\n", getpid(), i++);
-
-        if (i == 10) {
-            kill(getpid(), SIGKILL); //把自己杀死
-        }
         sleep(1);
     }
 
     //向进程自己发送SIGUSR1 和 SIGUSR2信号
-    raise(SIGUSR1);
+    kill(getpid(), SIGUSR1);
     kill(getpid(), SIGUSR2);
 
     return 0;
