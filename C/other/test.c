@@ -1,8 +1,10 @@
 #include <stdio.h>
 #include <stdint.h>
 
-void test_yiwei(void);
-void test_var_buf(void);
+#define F1(R) #R
+#define F2(R) F1(R)
+
+#define A "192.168.51.100"
 
 #define MY_LOG(fmt, ...) do {                                                 \
     printf("%s %s %d: "fmt"\n", __FILE__, __func__, __LINE__, ##__VA_ARGS__); \
@@ -59,10 +61,23 @@ void test_var_buf(void)
     MY_LOG("sizeof(TestA) = %ld", sizeof(TestA));
 }
 
+void test_macro(void)
+{
+#ifndef _WIN32
+    if (A != NULL) {
+        printf("F1(A) = %s\n", F1(A)); // ->
+        printf("F2(A) = %s\n", F2(A)); // -> F1(192.168.51.100) -> "192.168.51.100"
+    }
+#else
+    printf("not support win32 platform!\n");
+#endif
+}
+
 int main(void)
 {
     test_yiwei();
     test_var_buf();
+    test_macro();
 
     return 0;
 }
