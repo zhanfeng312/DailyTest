@@ -1,19 +1,9 @@
 #include <stdio.h>
 #include <stdint.h>
 
-#define F1(R) #R
-#define F2(R) F1(R)
-
-#define A "192.168.51.100"
-
 #define MY_LOG(fmt, ...) do {                                                 \
-    printf("%s %s %d: "fmt"\n", __FILE__, __func__, __LINE__, ##__VA_ARGS__); \
+    printf("%s %s %d: "fmt".\n", __FILE__, __func__, __LINE__, ##__VA_ARGS__); \
 } while (0)
-
-typedef struct {
-    uint16_t len;
-    char data[0];
-} TestA;
 
 void test_yiwei(void)
 {
@@ -51,22 +41,52 @@ void test_yiwei(void)
 #if 0
     右移:当为有符号数时,会保留符号位
     因为0x80000000 的二进制形式为:
-    10000000 00000000 00000000 00000000, 右移一位(因右符号位, 保留)后变为:
+    10000000 00000000 00000000 00000000, 右移一位(因符号位, 保留)后变为:
     11000000 00000000 00000000 00000000
 #endif
 }
 
-void test_var_buf(void)
+void test_other(void)
 {
+#if 0
+    typedef struct {
+        uint16_t len;
+        char data[0];
+    } TestA;
+
     MY_LOG("sizeof(TestA) = %ld", sizeof(TestA));
+
+    char *p = "";
+    MY_LOG("p = %p:&p = %p", p, &p);
+    MY_LOG("sizeof(p) = %ld", sizeof(p));
+
+    char p1[] = "";
+    MY_LOG("p1 = %p:&p1 = %p", p1, &p1);
+#endif
+    /*
+        10000000 00000000 00000000 00000000 负数
+        值等于反码+1, 反码: 01111111 11111111 11111111 11111111
+        反码+1:               10000000 00000000 00000000 00000000
+        所以值等于: 2 ^ 31 = -2147483648
+
+
+        01111111 11111111 11111111 11111111, 正数
+        值等于: 等比数列前31项和              1 * (1 - 2 ^ 31) / 1 - 2 = 2 ^ 31 - 1 = 2147483647
+    */
+    int i = 0x80000000, j = 0x7fffffff;
+    MY_LOG("i = %d, j = %d", i, j);
 }
+
+#define F1(R) #R
+#define F2(R) F1(R)
+#define A "192.168.51.100"
 
 void test_macro(void)
 {
 #ifndef _WIN32
     if (A != NULL) {
-        printf("F1(A) = %s\n", F1(A)); // ->
-        printf("F2(A) = %s\n", F2(A)); // -> F1(192.168.51.100) -> "192.168.51.100"
+        MY_LOG("F1(A) = %s", F1(A)); // ->
+        MY_LOG("F2(A) = %s", F2(A)); // -> F1(192.168.51.100) -> "192.168.51.100"
     }
 #else
     printf("not support win32 platform!\n");
@@ -75,9 +95,9 @@ void test_macro(void)
 
 int main(void)
 {
-    test_yiwei();
-    test_var_buf();
-    test_macro();
+    //test_yiwei();
+    test_other();
+    //test_macro();
 
     return 0;
 }

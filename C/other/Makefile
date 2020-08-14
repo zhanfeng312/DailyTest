@@ -9,8 +9,7 @@ $(module): test.c
 	$(Q) $(CC) $(CFLAGS) $^ -o $@
 
 run:
-	$(Q) echo $$PWD
-	$(Q) $$PWD/$(module)
+	$(Q) `pwd`/$(module)
 
 clean:
 	$(Q) $(RM) $(module)
