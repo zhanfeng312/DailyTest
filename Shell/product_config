@@ -1,9 +1,0 @@
-function test1()
-{
-    echo "This is test1"
-}
-
-function test2()
-{
-     echo "This is test2"
-}

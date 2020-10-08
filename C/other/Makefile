@@ -1,15 +1,22 @@
-module = test
+MODULE = test
 
 CC = gcc
 CFLAGS = -Wall -Werror
 RM = rm -rf
-Q = @
 
-$(module): test.c
-	$(Q) $(CC) $(CFLAGS) $^ -o $@
+SOURCES := $(wildcard *.c)
+OBJ := $(patsubst %.c, %.o, $(SOURCES))
+
+$(OBJ): $(SOURCES)
+	$(CC) $(CFLAGS) -c $<
+
+$(MODULE): $(OBJ)
+	@echo "sources $(SOURCES)"
+	@echo "obj $(OBJ)"
+	$(CC) $(CFLAGS) $< -o $@
 
 run:
-	$(Q) `pwd`/$(module)
+	$(PWD)/$(MODULE)
 
 clean:
-	$(Q) $(RM) $(module)
+	$(RM) $(OBJ) $(MODULE)

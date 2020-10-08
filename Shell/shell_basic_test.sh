@@ -13,14 +13,12 @@ function my_multiply ()
 var1=1
 var2=2
 
-#数学运算
 var3=`expr $var1 + $var2`
 var4=$[$var1 + $var2]
 
 echo $var3
 echo $var4
 
-#read + 函数用法
 read -p "Enter the first value: " var1
 read -p "Enter the second value: " var2
 
@@ -31,7 +29,7 @@ my_multiply ${var1} ${var2}
 echo $?
 
 (
-	#var3=`date`
+	var3=`date`
     var5=$(date)
     echo ${var3}
 )

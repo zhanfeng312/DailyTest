@@ -1,13 +1,13 @@
 #include <stdio.h>
 #include <stdint.h>
 
-#define MY_LOG(fmt, ...) do {                                                 \
+#define MY_LOG(fmt, ...) do { \
     printf("%s %s %d: "fmt".\n", __FILE__, __func__, __LINE__, ##__VA_ARGS__); \
 } while (0)
 
 void test_yiwei(void)
 {
-    #if 0
+#if 0
     1. 对于常量，由于左移的位数大于了31位，所以结果为0
     2. 对于变量，如果移位的位数b大于了该类型的大小sz ，则先用b对sz取模，即 b = b % sz，然后再进行移位运算
 
@@ -80,24 +80,26 @@ void test_other(void)
 #define F1(R) #R
 #define F2(R) F1(R)
 #define A "192.168.51.100"
-
 void test_macro(void)
 {
-#ifndef _WIN32
+//#ifndef _WIN32
+# if !defined(_WIN32)
+    MY_LOG("not win32");
     if (A != NULL) {
         MY_LOG("F1(A) = %s", F1(A)); // ->
+        MY_LOG("F1(FANG) = %s", F1(FANG)); // ->
         MY_LOG("F2(A) = %s", F2(A)); // -> F1(192.168.51.100) -> "192.168.51.100"
     }
 #else
-    printf("not support win32 platform!\n");
+    MY_LOG("win32 not support");
 #endif
 }
 
 int main(void)
 {
-    //test_yiwei();
-    test_other();
-    //test_macro();
+    // test_yiwei();
+    // test_other();
+    test_macro();
 
     return 0;
 }

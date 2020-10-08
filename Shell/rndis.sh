@@ -26,7 +26,8 @@ WIFI_GATEWAY_PROP="dhcp.wlan0.gateway"
 WIFI_DNS1_PROP='dhcp.wlan0.dns1'
 WIFI_DNS2_PROP='dhcp.wlan0.dns2'
 
-verify_static_routes() {
+function verify_static_routes()
+{
     routelist=$(${IP_CMD} route list table 1 | awk '{print $1}' -)
     for item in ${ETHERNET_STATIC_ROUTES}; do
         echo "item:${item}"
@@ -39,7 +40,8 @@ verify_static_routes() {
     done
 }
 
-set_wifi_dns_route() {
+function set_wifi_dns_route()
+{
     if [[ $# -lt 1 ]]; then
         echo "argument is null, usage:$0 wifi_dns_prop"
         return -1
@@ -53,7 +55,8 @@ set_wifi_dns_route() {
     return 0
 }
 
-set_wifi_static_routes() {
+function set_wifi_static_routes()
+{
     # mxp, 20180626, please see NatController.cpp, we auto add this ip rule, in netd
     #local item=
     #${IP_CMD} rule add from all table ${ADVANCED_ROUTER_ROUTE_ID} pref ${PREF_VALUE} || return 1
@@ -73,11 +76,13 @@ set_wifi_static_routes() {
     return 0
 }
 
-del_wifi_static_routes() {
+function del_wifi_static_routes()
+{
     ${IP_CMD} route flush table ${ADVANCED_ROUTER_ROUTE_ID}
 }
 
-set_usb_interface_up() {
+function set_usb_interface_up()
+{
     local index=0
     while [ ${index} -lt ${ETHERNET_WAIT_TIMEOUT_S} ]; do
         ${IFCONFIG_CMD} ${ETHERNET_INTERFACE_NAME} ${ETHERNET_INTERFACE_IP} up
@@ -107,7 +112,8 @@ set_usb_interface_up() {
     return 1
 }
 
-enable_ethernet_dns() {
+function enable_ethernet_dns()
+{
     ${NDC_CMD} resolver flushif ${ETHERNET_INTERFACE_NAME} || return 1
     ${NDC_CMD} resolver flushdefaultif || return 1
     ${NDC_CMD} resolver setdefaultif ${ETHERNET_INTERFACE_NAME} || return 1
@@ -115,7 +121,8 @@ enable_ethernet_dns() {
     return 0
 }
 
-check_and_update() {
+function check_and_update()
+{
     local wifi_result=$(getprop $WIFI_RESULT_PROP)
     #echo "ddd$wifi_result" >> /dev/console
     if [[ "x$wifi_result" == "xok" ]]; then
@@ -171,5 +178,4 @@ while [ 1 ]; do
 
     check_and_update
     sleep 2
-
 done
