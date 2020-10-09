@@ -1,51 +1,50 @@
+#wildcard: è¯¥å‡½æ•°æ˜¯é€šé…ç¬¦å‡½æ•°ï¼Œé€šè¿‡å®ƒå¯ä»¥å¾—åˆ°å½“å‰å·¥ä½œç›®å½•ä¸­æ»¡è¶³_patternæ¨¡å¼çš„æ–‡ä»¶æˆ–ç›®å½•ååˆ—è¡¨
+#ç”¨æ³•: $(wildcard _pattern)
+SRCS = $(wildcard *.c) $(wildcard sub/*.c)
 
-#wildcard: ¸Ãº¯ÊıÊÇÍ¨Åä·ûº¯Êı£¬Í¨¹ıËü¿ÉÒÔµÃµ½µ±Ç°¹¤×÷Ä¿Â¼ÖĞÂú×ã_patternÄ£Ê½µÄÎÄ¼ş»òÄ¿Â¼ÃûÁĞ±í
-#ÓÃ·¨£º$(wildcard _pattern)
-SRCS = $(wildcard *.c)
-
-#patsubst: ¸Ãº¯ÊıÓÃÓÚ½«Ãû×ÖÁĞ±í_textÖĞ·ûºÏ_patternÄ£Ê½µÄÃû×ÖÌæ»»Îª_replacement£¬²¢½«Ìæ»»ºóµÄÃû×ÖÁĞ±í·µ»Ø
-#ÓÃ·¨£º$(patsubst _pattern, _replacement, _text)
+#patsubst: è¯¥å‡½æ•°ç”¨äºå°†åå­—åˆ—è¡¨_textä¸­ç¬¦åˆ_patternæ¨¡å¼çš„åå­—æ›¿æ¢ä¸º_replacementï¼Œå¹¶å°†æ›¿æ¢åçš„åå­—åˆ—è¡¨è¿”å›
+#ç”¨æ³•ï¼š$(patsubst _pattern, _replacement, _text)
 mixed = foo.c bar.c main.o
 objects = $(patsubst %.c, %.o, $(mixed))
 
-#strip: ÓÃÓÚÇå³ıÃû×ÖÁĞ±íÖĞµÄ¶àÓà¿Õ¸ñ
-#ÓÃ·¨£º$(strip _string)
-original = foo.c           bar.c
+#strip: ç”¨äºæ¸…é™¤åå­—åˆ—è¡¨ä¸­çš„å¤šä½™ç©ºæ ¼
+#ç”¨æ³•ï¼š$(strip _string)
+original =      foo.c           bar.c 
 stripped := $(strip $(original))
 
-#addprefix: ¼ÓÇ°×º
-#ÓÃ·¨£º$(addprefix _prefix, _names)
+#addprefix: åŠ å‰ç¼€
+#ç”¨æ³•ï¼š$(addprefix _prefix, _names)
 without_dir = main.c bar.c foo.c
 with_dir := $(addprefix src/, $(without_dir))
 
-#addsuffix: ¼Óºó×º
-#ÓÃ·¨£º$(addsuffix _suffix, _names)
+#addsuffix: åŠ åç¼€
+#ç”¨æ³•ï¼š$(addsuffix _suffix, _names)
 without_suffix = main foo bar
 with_suffix := $(addsuffix .c, $(without_suffix))
 
-#filter: ¸Ãº¯ÊıÓÃÓÚ´ÓÒ»¸öÃû×ÖÁĞ±í_textÖĞ¸ù¾İÄ£Ê½_patternµÃµ½Âú×ãĞèÒªµÄÃû×ÖÁĞ±í·µ»Ø
-#ÓÃ·¨£º$(filter _pattern, _text)
+#filter: è¯¥å‡½æ•°ç”¨äºä»ä¸€ä¸ªåå­—åˆ—è¡¨_textä¸­æ ¹æ®æ¨¡å¼_patternå¾—åˆ°æ»¡è¶³éœ€è¦çš„åå­—åˆ—è¡¨è¿”å›
+#ç”¨æ³•ï¼š$(filter _pattern, _text)
 sources = foo.c bar.c bar.s ugh.h
 sources := $(filter %.c %.s, $(sources))
 
-#filter-out: ¸Ãº¯ÊıÓÃÓÚ´ÓÃû×ÖÁĞ±í_textÖĞ¸ù¾İÄ£Ê½_patternÂË³ıÒ»²¿·ÖÃû×Ö£¬²¢½«ÂË³ıºóµÄÁĞ±í·µ»Ø
-#ÓÃ·¨£º$(filter-out _pattern, _text)
+#filter-out: è¯¥å‡½æ•°ç”¨äºä»åå­—åˆ—è¡¨_textä¸­æ ¹æ®æ¨¡å¼_patternæ»¤é™¤ä¸€éƒ¨åˆ†åå­—ï¼Œå¹¶å°†æ»¤é™¤åçš„åˆ—è¡¨è¿”å›
+#ç”¨æ³•ï¼š$(filter-out _pattern, _text)
 #objects = main1.o foo.o main2.o bar.o
 result = $(filter-out main%.o, $(objects))
 
-#notdir: ¸Ãº¯ÊıÓÃÓÚ´ÓÂ·¾¶_namesÖĞ³éÈ¡ÎÄ¼şÃû£¬²¢½«ÎÄ¼şÃû·µ»Ø
-#ÓÃ·¨£º$(notdir _names)
+#notdir: è¯¥å‡½æ•°ç”¨äºä»è·¯å¾„_namesä¸­æŠ½å–æ–‡ä»¶åï¼Œå¹¶å°†æ–‡ä»¶åè¿”å›
+#ç”¨æ³•ï¼š$(notdir _names)
 file_name := $(notdir code/foo/src/foo.c code/bar/src/bar.c)
 
-#eval: evalº¯ÊıµÄ´æÔÚÊ¹µÃMakefile¾ßÓĞ¶¯Ì¬ÓïÑÔµÄÌØÕ÷¡£evalº¯ÊıÊ¹µÃmake½«ÔÙÒ»´Î½âÎö_textÓï¾ä
-#ÓÃ·¨£º$(eval _text)
+#eval: evalå‡½æ•°çš„å­˜åœ¨ä½¿å¾—Makefileå…·æœ‰åŠ¨æ€è¯­è¨€çš„ç‰¹å¾ã€‚evalå‡½æ•°ä½¿å¾—makeå°†å†ä¸€æ¬¡è§£æ_textè¯­å¥
+#ç”¨æ³•ï¼š$(eval _text)
 
-#ÓÃ·¨£º$(abspath _names)
-#¸Ãº¯ÊıÖ÷ÒªÓÃÓÚ½«_namesÖĞµÄ¸÷Â·¾¶×ª»»³É¾ø¶ÔÂ·¾¶£¬²¢½«×ª»»ºóµÄ½á¹û·µ»Ø
+#ç”¨æ³•ï¼š$(abspath _names)
+#è¯¥å‡½æ•°ä¸»è¦ç”¨äºå°†_namesä¸­çš„å„è·¯å¾„è½¬æ¢æˆç»å¯¹è·¯å¾„ï¼Œå¹¶å°†è½¬æ¢åçš„ç»“æœè¿”å›
 #ROOT := $(abspath /usr/../lib)
 
-#ÓÃ·¨£º$(realpath _names)
-#ÓÃÓÚ»ñÈ¡_namesËù¶ÔÓ¦µÄÕæÊµÂ·¾¶
+#ç”¨æ³•ï¼š$(realpath _names)
+#ç”¨äºè·å–_namesæ‰€å¯¹åº”çš„çœŸå®è·¯å¾„
 #ROOT := $(realpath ./..)
 
 all:
