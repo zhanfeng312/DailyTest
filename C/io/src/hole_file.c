@@ -5,7 +5,7 @@
 #include <fcntl.h>
 #include <errno.h>
 
-/*Éú³É¿Õ¶´ÎÄ¼þ*/
+/*ï¿½ï¿½ï¿½É¿Õ¶ï¿½ï¿½Ä¼ï¿½*/
 char *buffer = "0123456789";
 
 int main(int argc, char *argv[])
@@ -18,29 +18,24 @@ int main(int argc, char *argv[])
 
     int fd = open(argv[1], O_WRONLY | O_CREAT | O_TRUNC, 0777);
     if (fd < 0) {
-
         perror("open error");
         exit(1);
     }
 
     size_t size = strlen(buffer) * sizeof(char);
-    //½«×Ö·û´®Ð´Èëµ½¿Õ¶´ÎÄ¼þÖÐ
     if (write(fd, buffer, size) != size) {
-
-        perror("write error");//ÄÚ²¿µ÷ÓÃÁËstrerror
+        perror("write error");//ä½¿ç”¨strerrorè¿›è¡Œåˆ†æž
         exit(1);
     }
 
-    //¶¨Î»µ½ÎÄ¼þÎ²²¿µÄ10¸ö×Ö½Ú´¦
+    //ï¿½ï¿½Î»ï¿½ï¿½ï¿½Ä¼ï¿½Î²ï¿½ï¿½ï¿½ï¿½10ï¿½ï¿½ï¿½Ö½Ú´ï¿½
     if (lseek(fd, 10L, SEEK_END) < 0) {
-
         perror("lseek error");
         exit(1);
     }
 
-    //´ÓÎÄ¼þÎ²²¿µÄ10¸ö×Ö½Ú´¦ÔÙÐ´Èë×Ö·û´®
+    //ï¿½ï¿½ï¿½Ä¼ï¿½Î²ï¿½ï¿½ï¿½ï¿½10ï¿½ï¿½ï¿½Ö½Ú´ï¿½ï¿½ï¿½Ð´ï¿½ï¿½ï¿½Ö·ï¿½ï¿½ï¿½
     if (write(fd, buffer, size) != size) {
-
         perror("write error");
         exit(1);
     }

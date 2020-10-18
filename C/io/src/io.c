@@ -13,14 +13,11 @@ void copy(int fdin, int fdout)
     char buffer[BUFFER_LEN];
     ssize_t size;
 
-    //¶¨Î»µ½ÎÄ¼þÎ²²¿
+    //åç§»åˆ°æ–‡ä»¶å°¾éƒ¨
     lseek(fdin, 0L, SEEK_END);
-    //¶¨Î»µ½ÎÄ¼þ¿ªÊ¼
+    //åç§»åˆ°æ–‡ä»¶å¤´éƒ¨
     lseek(fdin, 0L, SEEK_SET);
     while ((size = read(fdin, buffer, BUFFER_LEN)) > 0) {
-
-        printf("read size: %ld\n", size);
-        printf("current: %ld\n", lseek(fdin, 0L, SEEK_CUR));
         if (write(fdout, buffer, size) != size) {
             fprintf(stderr, "write error: %s\n", strerror(errno));
             exit(1);
@@ -29,6 +26,6 @@ void copy(int fdin, int fdout)
 
     if (size < 0) {
         fprintf(stderr, "read error: %s\n", strerror(errno));
-        exit(1); //return 1 ·Ç0£¬²»Õý³£
+        exit(1); //return 1 éžé›¶è¡¨ç¤ºå¼‚å¸¸
     }
 }

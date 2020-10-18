@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdint.h>
+#include <unistd.h>
 
 #define MY_LOG(fmt, ...) do { \
     printf("%s %s %d: "fmt".\n", __FILE__, __func__, __LINE__, ##__VA_ARGS__); \
@@ -100,6 +101,13 @@ int main(void)
     // test_yiwei();
     // test_other();
     test_macro();
+
+    printf("abc\nd");
+
+    while (1){
+        sleep(5);
+        break;
+    }
 
     return 0;
 }

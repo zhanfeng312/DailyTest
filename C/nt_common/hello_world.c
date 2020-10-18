@@ -45,6 +45,8 @@ int     g_system_done = 0;
 //entry
 int main(int argc, char *argv[])
 {
+    printf("argc is %d\n", argc);
+
     //signal deal start
     struct sigaction sa;
     sa.sa_flags = 0;

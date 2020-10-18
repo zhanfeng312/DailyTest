@@ -6,15 +6,14 @@
 
 int main(int argc, char *argv[])
 {
-    if (argc < 3){
-
+    if (argc < 3) {
         fprintf(stderr, "usage:; %s content destfile\n", argv[0]);
         exit(1);
     }
 
     //int fd = open(argv[2], O_WRONLY);
     int fd = open(argv[2], O_WRONLY | O_APPEND);
-    if (fd < 0){
+    if (fd < 0) {
         perror("open error");
         exit(1);
     }
