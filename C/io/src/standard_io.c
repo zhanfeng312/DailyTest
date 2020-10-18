@@ -3,21 +3,12 @@
 #include <stdlib.h>
 
 #define BUFF_SIZE  (64)
-char g_buf[BUFF_SIZE] = { 0 };
+char g_buf[BUFF_SIZE] = {0};
 
 void print(char *buf)
 {
     printf("%s\n", buf);
     printf("len is %ld\n", strlen(buf));
-}
-
-void test_gets(void)
-{
-    gets(g_buf);
-    //gets ����û����������ȡ���ȣ�һ�㲻��
-    //gets()�����������з�('\n')��ȡ����֮������'\0'��β��
-
-    print(g_buf);
 }
 
 void test_fgets(void)
@@ -42,8 +33,7 @@ void test_fgets(void)
                 printf("fgets read error\n");
                 break;
             }
-        }
-        else {
+        } else {
             if ((len = strlen(g_buf)) > 0 && *(g_buf + len - 1) == '\n') {
                 *(g_buf + len - 1) = 0;
             }
@@ -57,25 +47,27 @@ void test_fgets(void)
 
 void test_scanf(void)
 {
+#if 0
     printf("input content:\n");
     scanf("%*s%s", g_buf);//�������з�ֹͣ
 
-    //int a;
-    //char c;
+    int a;
+    char c;
 
-    //do
-    //{
-    //    scanf("%d", &a);
-    //    //ͨ�� while ѭ�����������е��������ݡ��ԡ�����
-    //    //gcc ��fflush(stdin)������
-    //    int c1;
-    //    while ((c1 = getchar()) != '\n' && c1 != EOF);
-    //    //fflush(stdin);
-    //    scanf("%c", &c);
-    //    //fflush(stdin);
-    //    while ((c1 = getchar()) != '\n' && c1 != EOF);
-    //    printf("a=%d   c=%c\n", a, c);
-    //} while (c != 'N');
+    do
+    {
+       scanf("%d", &a);
+       //ͨ�� while ѭ�����������е��������ݡ��ԡ�����
+       //gcc ��fflush(stdin)������
+       int c1;
+       while ((c1 = getchar()) != '\n' && c1 != EOF);
+       //fflush(stdin);
+       scanf("%c", &c);
+       //fflush(stdin);
+       while ((c1 = getchar()) != '\n' && c1 != EOF);
+       printf("a=%d   c=%c\n", a, c);
+    } while (c != 'N');
+#endif
 }
 
 void test_sscanf(void)
@@ -127,7 +119,7 @@ void test_file(void)
 
     char buf[] = "Juan\nFang";
     size_t num = fwrite(buf, 1, sizeof(buf), fp);
-    printf("res is %d\n", num);
+    printf("res is %ld\n", num);
 
     fclose(fp);
     fp = NULL;
@@ -137,19 +129,14 @@ int main(int argc, char *argv[])
 {
     test_file();
 
-#if 0
-    printf("-------------test gets!-----------\n");
-    test_gets();
-
-    printf("-------------test fgets-----------\n");
+    printf("--------- test fgets-----------\n");
     test_fgets();
 
-    printf("----------test scanf----------------\n");
+    printf("----------test scanf-----------\n");
     test_scanf();
 
-    printf("------test sscanf---------------------\n ");
+    printf("----------test sscanf----------\n");
     test_sscanf();
-#endif
 
     getchar();
 
