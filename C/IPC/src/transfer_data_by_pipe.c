@@ -45,18 +45,17 @@ int main(void)
     //    wait(0);
     //}
 
-    //½ø³ÌÉÈ
+    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     for (; i < 2; i++) {
 
         if ((pid = fork()) < 0) {
             perror("fork error");
             exit(1);
-        }
-        else if (pid == 0) {//child process
+        } else if (pid == 0) {//child process
 
             if (i == 0) {
 
-                close(fd[0]);//¹Ø±Õ¶Á¶Ë
+                close(fd[0]);//ï¿½Ø±Õ¶ï¿½ï¿½ï¿½
 
                 int start = 10, end = 100;
                 if (write(fd[1], &start, sizeof(int)) != sizeof(int)) {
@@ -70,11 +69,9 @@ int main(void)
 
                 close(fd[1]);
                 break;
-            }
+            } else if (i == 1) {
 
-            if (i == 1) {
-
-                close(fd[1]);//¹Ø±ÕÐ´¶Ë
+                close(fd[1]);//ï¿½Ø±ï¿½Ð´ï¿½ï¿½
 
                 int start, end;
                 if (read(fd[0], &start, sizeof(int)) != sizeof(int)) {
@@ -90,11 +87,8 @@ int main(void)
                 close(fd[0]);
                 break;
             }
-        }
-        else {//parent process
-
-            if (i == 1) {//µ±½ø³Ì´´½¨³É¹¦ºó£¬µÈ´ý»ØÊÕ×ÊÔ´
-
+        } else {//parent process
+            if (i == 1) {//ï¿½ï¿½ï¿½ï¿½ï¿½Ì´ï¿½ï¿½ï¿½ï¿½É¹ï¿½ï¿½ó£¬µÈ´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô´
                 close(fd[0]);
                 close(fd[1]);
                 wait(0);
@@ -103,5 +97,5 @@ int main(void)
         }
     }
 
-    exit(0);
+    return 0;
 }
