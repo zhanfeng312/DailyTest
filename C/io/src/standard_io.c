@@ -11,7 +11,7 @@ void test_fgets(void)
     char *p = NULL;
     int len = -1;
 
-    if ((fp = fopen("b.txt", "r")) == NULL) {
+    if ((fp = fopen("b.txt", "r")) == NULL) { //不同的打开方式
         printf("b.txt not exist!\n");
         return;
     }
@@ -28,13 +28,12 @@ void test_fgets(void)
                 break;
             }
         } else {
-            if ((len = strlen(g_buf)) > 0 && *(g_buf + len - 1) == '\n') {
+            if ((len = strlen(g_buf)) > 0 && *(g_buf + len - 1) == '\n') { //把最后的\n转换为\0
                 *(g_buf + len - 1) = 0;
             }
             printf("%s\n", g_buf);
         }
     }
-
     fclose(fp);
     fp = NULL;
 }
@@ -83,7 +82,7 @@ void test_scanf(void)
        scanf("%c", &c);
        //fflush(stdin);
        while ((c1 = getchar()) != '\n' && c1 != EOF);
-       printf("a=%d   c=%c\n", a, c);
+       printf("a=%d c=%c\n", a, c);
     } while (c != 'N');
 }
 
@@ -91,40 +90,40 @@ void test_sscanf(void)
 {
     char buf[512] = { 0 };
     sscanf("123456 ", "%s", buf);
-    printf("%s\n", buf);
+    printf("[%s]\n", buf);
 
     sscanf("123456 ", "%4s", buf);
-    printf("%s\n", buf);
+    printf("[%s]\n", buf);
 
     sscanf("123456 abcdedf", "%[^ ]", buf);
-    printf("%s\n", buf);
+    printf("[%s]\n", buf);
 
     sscanf("123456abcdedfBCDEF", "%[1-9a-z]", buf);
-    printf("%s\n", buf);
+    printf("[%s]\n", buf);
 
     sscanf("123456abcdedfBCDEF", "%[^A-Z]", buf);
-    printf("%s\n", buf);
+    printf("[%s]\n", buf);
 
     sscanf("iios/12DDWDFF@122", "%*[^/]/%[^@]", buf);
-    printf("%s\n", buf);
+    printf("[%s]\n", buf);
 
     sscanf("hello, world", "%*s%s", buf);
-    printf("%s\n", buf);
+    printf("[%s]\n", buf);
 }
 
 int main(int argc, char *argv[])
 {
-    printf("----------test printf-----------\n");
-    test_printf();
+    // printf("----------test printf-----------\n");
+    // test_printf();
 
-    printf("----------test scanf------------\n");
-    test_scanf();
+    // printf("----------test scanf------------\n");
+    // test_scanf();
 
     // printf("----------test sscanf----------\n");
     // test_sscanf();
 
-    // printf("----------test fgets----------\n");
-    // test_fgets();
+    printf("----------test fgets----------\n");
+    test_fgets();
 
     getchar();
 
