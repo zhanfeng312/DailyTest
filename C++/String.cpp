@@ -3,13 +3,12 @@
 using namespace std;
 
 class String {
-
 public:
     String(const char *str = NULL)
     {
         cout << "construct" << endl;
         m_str = new char[strlen(str ? str : "") + 1];
-        strcpy(m_str, str ? str : "");//Á¬\0Ò²¿½±´
+        strcpy(m_str, str ? str : "");//ï¿½ï¿½\0Ò²ï¿½ï¿½ï¿½ï¿½
     }
 
     ~String(void)
@@ -22,7 +21,7 @@ public:
         }
     }
 
-    String(const String& that) {//¿½±´¹¹Ôìº¯Êý
+    String(const String& that) {//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ìº¯ï¿½ï¿½
 
         cout << "copy construct" << endl;
         m_str = new char[strlen(that.m_str) + 1];
@@ -35,7 +34,7 @@ public:
         strcpy(m_str, that.m_str);
     }*/
 
-    String& operator =(const String& that)//¿½±´¸³ÖµÔËËã·û
+    String& operator =(const String& that)//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öµï¿½ï¿½ï¿½ï¿½ï¿½
     {
         cout << "assign" << endl;
         if (&that != this) {
