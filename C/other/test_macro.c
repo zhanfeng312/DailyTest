@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include "../common/nt_common.h"
 
 #define F1(R) #R
 #define F2(R) F1(R)
@@ -16,8 +17,8 @@ void test_macro(void)
 //#ifndef _WIN32
 #if !defined(_WIN32)
     if (A != NULL) {
-        MY_LOG("F1(A) = %s", F1(A)); // ->
-        MY_LOG("F1(FANG) = %s", F1(FANG)); // ->
+        MY_LOG("F1(A) = %s", F1(A)); // ->A
+        MY_LOG("F1(FANG) = %s", F1(FANG)); // ->FANG
         MY_LOG("F2(A) = %s", F2(A)); // -> F1(192.168.51.100) -> "192.168.51.100"
     }
 #else
