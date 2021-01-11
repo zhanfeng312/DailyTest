@@ -29,3 +29,27 @@ void copy(int fdin, int fdout)
         exit(1); //return 1 非零表示异常
     }
 }
+
+void set_fl(int fd, int flag)
+{
+    //获得原来的文件状态标志
+    int val = fcntl(fd, F_GETFL);
+    //增加新的文件状态标志
+    val |= flag;
+    //重新设置文件状态标志(val为新的文件状态标志)
+    if (fcntl(fd, F_SETFL, val) < 0) {
+        perror("fnctl error");
+    }
+}
+
+void clr_fl(int fd, int flag)
+{
+    //获得原来的文件状态标志
+    int val = fcntl(fd, F_GETFL);
+    //清空指定的文件状态标志(置为0)
+    val &= ~flag;
+    //重新设置文件状态标志(val为新的文件状态标志)
+    if (fcntl(fd, F_SETFL, val) < 0) {
+        perror("fnctl error");
+    }
+}

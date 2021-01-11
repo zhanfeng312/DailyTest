@@ -7,16 +7,24 @@
 int main(int argc, char *argv[])
 {
     if (argc < 3) {
-        fprintf(stderr, "usage:; %s content destfile\n", argv[0]);
+        fprintf(stderr, "usage: %s content destfile\n", argv[0]);
         exit(1);
     }
 
-    //int fd = open(argv[2], O_WRONLY);
-    int fd = open(argv[2], O_WRONLY | O_APPEND);
+    int fd = open(argv[2], O_WRONLY);
     if (fd < 0) {
         perror("open error");
         exit(1);
     }
+
+    //设置追加的文件状态标志
+    set_fl(fd, O_APPEND);
+
+    // int fd = open(argv[2], O_WRONLY | O_APPEND);
+    // if (fd < 0) {
+    //     perror("open error");
+    //     exit(1);
+    // }
 
     //定位到文件尾部，添加了O_APPEND选项就不用lseek了
     //lseek(fd, 0L, SEEK_END);

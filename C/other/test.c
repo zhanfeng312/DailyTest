@@ -52,7 +52,6 @@ void test_other(void)
 
     char p1[] = "";
     MY_LOG("p1 = %p:&p1 = %p", p1, &p1); //字符数组, p1就是数组的地址，值和&p1相同
-#endif
 
     const char *buf = "123";
     uint8_t a = buf[0];
@@ -63,12 +62,19 @@ void test_other(void)
     printf("a = %u\n", a);
     a = 0xEF;
     printf("a = %u\n", a);
+#endif
+    unsigned int a = 0;
+    if (-1 > 2u) {
+        printf("-1 > 2u\n");
+    }
+    int b = (int)(a - 60u);
+    printf("b = %d\n", b);
 }
 
 int main(void)
 {
     printf("CompileTime: [%s-%s]\n", __DATE__, __TIME__);
-    test_yiwei();
+    // test_yiwei();
     test_other();
 
     return 0;

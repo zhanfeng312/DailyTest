@@ -17,7 +17,6 @@ int main(int argc, char *argv[])
         perror("open error");
         exit(1);
     }
-
     close(fd);
 
     return 0;

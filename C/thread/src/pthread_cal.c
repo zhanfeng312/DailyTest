@@ -13,6 +13,7 @@ typedef struct
 //定义计算结果的线程
 void *set_fn(void *arg)
 {
+	sleep(5);
 	int i = 1, sum = 0;
 	for(; i <= 100; i++){
 		sum += i;
@@ -39,7 +40,7 @@ void *set_fn(void *arg)
 //定义获取结果的线程
 void *get_fn(void *arg)
 {
-	sleep(5);
+	//sleep(5);
 	Result *r = (Result*)arg;
 
 	//对共享资源进行加锁
