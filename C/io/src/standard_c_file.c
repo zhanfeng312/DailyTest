@@ -15,10 +15,11 @@ void test_file(void)
         exit(1);
     }
 
-    char buf[] = "Juan\nFang\n";
+    char buf[] = "Juan\n";
     printf("sizeof buf = %lu, strlen(buf) = %lu\n", sizeof(buf), strlen(buf));
-    size_t num = fwrite(buf, 1, sizeof(buf), fp);
-    printf("res is %lu\n", num);
+    //size_t result = fwrite(buf, sizeof(char), sizeof(buf), fp); //返回实际写入的nmemb数目
+    size_t result = fwrite(buf, sizeof(buf), sizeof(char), fp); //返回实际写入的nmemb数目
+    printf("result is %lu\n", result);
 
     fclose(fp);
 }
@@ -46,10 +47,8 @@ void test_content(void)
 
 int main(int argc, char *argv[])
 {
-    // printf("----------test file-----------\n");
-    // test_file();
-
-    test_content();
+    test_file();
+    // test_content();
 
     (void)getchar();
 

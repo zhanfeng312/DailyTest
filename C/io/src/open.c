@@ -7,7 +7,6 @@
 int main(int argc, char *argv[])
 {
     if (argc < 2) {
-
         fprintf(stderr, "usage: %s newfile\n", argv[0]);
         exit(1);
     }
@@ -18,6 +17,5 @@ int main(int argc, char *argv[])
         exit(1);
     }
     close(fd);
-
     return 0;
 }
