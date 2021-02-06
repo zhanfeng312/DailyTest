@@ -12,7 +12,7 @@ typedef struct
     double   amt;
 }OperArg;
 
-//È¡¿î
+//È¡ï¿½ï¿½
 void *withdraw_fn(void *arg)
 {
     OperArg *oa = (OperArg*)arg;
@@ -24,7 +24,7 @@ void *withdraw_fn(void *arg)
     return (void*)0;
 }
 
-//´æ¿î
+//ï¿½ï¿½ï¿½
 void *deposit_fn(void *arg)
 {
     OperArg *oa = (OperArg*)arg;
@@ -37,7 +37,7 @@ void *deposit_fn(void *arg)
 }
 
 
-//¶¨Òå¼ì²éÒøÐÐÕË»§µÄÏß³ÌÔËÐÐº¯Êý
+//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ë»ï¿½ï¿½ï¿½ï¿½ß³ï¿½ï¿½ï¿½ï¿½Ðºï¿½ï¿½ï¿½
 void *check_fn(void *arg)
 {
     
@@ -58,8 +58,8 @@ int main(int argc, char *argv[])
     o2.account = a;
     o2.amt = 10000;
 
-    //Æô¶¯Á½¸ö×ÓÏß³Ì(boyºÍgirl Ïß³Ì)
-    //Í¬Ê±È¥²Ù×÷Í¬Ò»¸öÒøÐÐÕË»§
+    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ß³ï¿½(boyï¿½ï¿½girl ï¿½ß³ï¿½)
+    //Í¬Ê±È¥ï¿½ï¿½ï¿½ï¿½Í¬Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ë»ï¿½
     if ((err = pthread_create(&boy_thid, NULL,
                     withdraw_fn, (void*)&o1)) != 0){
         perror("pthread create error");

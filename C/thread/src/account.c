@@ -3,8 +3,6 @@
 #include <assert.h>
 #include <string.h>
 
-
-
 //创建账户
 Account* create_account(int code, double balance)
 {

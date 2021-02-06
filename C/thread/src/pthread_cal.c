@@ -71,10 +71,10 @@ int main(int argc, char *argv[])
 	pthread_cond_init(&r.cond, NULL);
 	pthread_mutex_init(&r.mutex, NULL);
 
-	if ((err = pthread_create(&get, NULL, get_fn, (void*)&r)) != 0){
+	if ((err = pthread_create(&get, NULL, get_fn, (void*)&r)) != 0) {
 		perror("pthread create error");
 	}
-	if ((err = pthread_create(&cal, NULL, set_fn, (void*)&r)) != 0){
+	if ((err = pthread_create(&cal, NULL, set_fn, (void*)&r)) != 0) {
 		perror("pthread create error");
 	}
 
