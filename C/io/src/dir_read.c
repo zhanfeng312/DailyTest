@@ -10,7 +10,6 @@ int main(int argc, char *argv[])
         fprintf(stderr, "usage: %s dir\n", argv[0]);
         exit(1);
     }
-
     struct stat buff;
     if (lstat(argv[1], &buff) < 0) {
         perror("lstat error");
@@ -18,7 +17,7 @@ int main(int argc, char *argv[])
     }
     //判断是否为目录
     if (!S_ISDIR(buff.st_mode)) {
-        fprintf(stderr, "%s is not directory", argv[1]);
+        fprintf(stderr, "%s is not dir", argv[1]);
         exit(1);
     }
 

@@ -46,9 +46,13 @@ void test_yiwei(void)
     MY_LOG("[0x%08x]右移一位为:[0x%08x]", i, i >> 1);
 }
 
-void test_other(void)
+void TestVarStruct(void)
 {
     MY_LOG("sizeof(VarStruct) = %ld", sizeof(VarStruct));
+}
+
+void test_other(void)
+{
     MY_LOG("sizeof(TestField) = %ld", sizeof(TestField));
 
     TestField testField; //a: 4, b: 5
@@ -79,11 +83,26 @@ void test_other(void)
     }
 }
 
+static void usage(void)
+{
+    printf("1. Test VarStruct\n");
+    printf("2. Test yiwei\n");
+}
+
 int main(void)
 {
     printf("CompileTime: [%s-%s]\n", __DATE__, __TIME__);
-    // test_yiwei();
-    test_other();
+    int choice;
+    while (1) {
+        usage();
+        scanf("%d", &choice);
+        if (choice == 'q') {
+            printf("quit!.\n");
+            break;
+        } else {
+            TestVarStruct();
+        }
+    }
 
     return 0;
 }
