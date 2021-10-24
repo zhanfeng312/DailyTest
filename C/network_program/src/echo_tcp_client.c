@@ -7,16 +7,15 @@
 #include <arpa/inet.h>
 #include <memory.h>
 
-
 int main(int argc, char *argv[])
 {
-    if (argc < 3){
-        printf("usage: %s ip port\n", argv[0]);
+    if (argc < 3) {
+        fprintf(stderr, "usage: %s ip port\n", argv[0]);
         exit(1);
     }
 
     /*
-    ²½ÖèÒ»: ´´½¨socket
+    ï¿½ï¿½ï¿½ï¿½Ò»: ï¿½ï¿½ï¿½ï¿½socket
     */
     int sockfd = socket(AF_INET, SOCK_STREAM, 0);
     if (sockfd < 0){
@@ -24,26 +23,23 @@ int main(int argc, char *argv[])
         exit(1);
     }
 
-    //ÍùserveraddrÖÐÌîÈëip, port ºÍ µØÖ·×åÀàÐÍ
+    //ï¿½ï¿½serveraddrï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ip, port ï¿½ï¿½ ï¿½ï¿½Ö·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     struct sockaddr_in serveraddr;
     memset(&serveraddr, 0, sizeof(serveraddr));
     serveraddr.sin_family = AF_INET;
     serveraddr.sin_port = htons(atoi(argv[2]));
-    //½«ipµØÖ·×ª»»³ÉÍøÂç×Ö½ÚÐòºóÌîÈëserveraddrÖÐ
-    inet_pton(AF_INET, argv[1],
-                &serveraddr.sin_addr.s_addr);
+    //ï¿½ï¿½ipï¿½ï¿½Ö·×ªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½serveraddrï¿½ï¿½
+    inet_pton(AF_INET, argv[1], &serveraddr.sin_addr.s_addr);
     /*
-    ²½Öè¶þ: ¿Í»§¶Ëµ÷ÓÃconnect º¯ÊýÁ¬½Óµ½·þÎñÆ÷¶Ë
+    ï¿½ï¿½ï¿½ï¿½ï¿½: ï¿½Í»ï¿½ï¿½Ëµï¿½ï¿½ï¿½connect ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Óµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     */
-    if (connect(sockfd,
-                (struct sockaddr*)&serveraddr,
-                sizeof (serveraddr)) < 0){
+    if (connect(sockfd, (const struct sockaddr*)&serveraddr, sizeof(serveraddr)) < 0){
         perror("connect error");
         exit(1);
     }
 
     /*
-    ²½ÖèÈý: µ÷ÓÃIOº¯Êý(read/write)ºÍ·þÎñÆ÷¶Ë½øÐÐË«ÏòÍ¨ÐÅ
+    ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½: ï¿½ï¿½ï¿½ï¿½IOï¿½ï¿½ï¿½ï¿½(read/write)ï¿½Í·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ë½ï¿½ï¿½ï¿½Ë«ï¿½ï¿½Í¨ï¿½ï¿½
     */
 
     char buff[512] = {0};
@@ -51,7 +47,6 @@ int main(int argc, char *argv[])
     char *prompt = ">";
 
     while (1) {
-
         memset(buff, 0, sizeof(buff));
         write(STDOUT_FILENO, prompt, 1);
         size = read(STDIN_FILENO, buff, sizeof(buff));
@@ -74,9 +69,9 @@ int main(int argc, char *argv[])
     }
 
     /*
-    ²½ÖèËÄ: ¹Ø±Õsocket
+    ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½: ï¿½Ø±ï¿½socket
     */
     close(sockfd);
-    
+
     return 0;
 }

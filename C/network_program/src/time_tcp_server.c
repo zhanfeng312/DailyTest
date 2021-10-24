@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdint.h>
 #include <stdlib.h>
 #include <sys/types.h>
 #include <sys/socket.h>
@@ -21,16 +22,16 @@ void sig_handler(int signo)
 }
 
 /*输出已连接的客户端信息*/
-void out_addr(struct sockaddr_in *clientAddr)
+void out_addr(const struct sockaddr_in *clientAddr)
 {
     //将端口从网络字节序转换成主机字节序
-    int port = ntohs(clientAddr->sin_port);
+    uint16_t port = ntohs(clientAddr->sin_port);
     char ip[16] = {0};
 
     //将ip地址从网络字节序转换成点分十进制
     inet_ntop(AF_INET, &clientAddr->sin_addr.s_addr, ip, sizeof(ip));
 
-    printf("client: %s(%d) connected\n", ip, port);
+    printf("client: %s(%u) connected\n", ip, port);
 }
 
 void do_service(int fd)
@@ -60,9 +61,10 @@ int main(int argc, char *argv[])
 
     /*
     1、创建socket
-      socket创建在内核中，是一个结构体
+      socket创建在内核中
       AF_INET: IPv4
       AF_INET6 IPv6
+
       SOCK_STREAM:tcp
       SOCK_DGRAM: udp
     */
@@ -73,15 +75,15 @@ int main(int argc, char *argv[])
     }
 
     /*
-    2、调用bind函数将socket 和地址(包括ip,port)进行绑定
+    2、调用bind函数将socket和地址(包括ip,port)进行绑定
     */
     struct sockaddr_in serverAddr;
     memset(&serverAddr, 0, sizeof(serverAddr));
     //往地址中填入ip, port, internet地址族类型
     serverAddr.sin_family = AF_INET; //IPV4
     serverAddr.sin_port = htons(atoi(argv[1]));//port
-    serverAddr.sin_addr.s_addr = INADDR_ANY;
-    if (bind(g_serverFd, (struct sockaddr*)&serverAddr, sizeof(serverAddr)) < 0) {
+    serverAddr.sin_addr.s_addr = htonl(INADDR_ANY);
+    if (bind(g_serverFd, (const struct sockaddr*)&serverAddr, sizeof(serverAddr)) < 0) {
         perror("bind error");
         exit(1);
     }
@@ -92,7 +94,6 @@ int main(int argc, char *argv[])
        (将接收到的客户端连接请求放置到对应的队列中)
        第二个参数: 指定队列的长度
     */
-
     if (listen(g_serverFd, 10) < 0) {
         perror("listen error");
         exit(1);

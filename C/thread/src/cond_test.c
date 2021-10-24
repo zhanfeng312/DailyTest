@@ -20,7 +20,7 @@ static Test g_test = {
     .condLock = PTHREAD_MUTEX_INITIALIZER
 };
 
-static void *thread_func(void *arg)
+static void *ThreadFunc(void *arg)
 {
     printf("enter %s\n", __func__);
 
@@ -34,7 +34,7 @@ static void *thread_func(void *arg)
 int main(int argc, char *argv[])
 {
     pthread_t tid;
-    int32_t ret = pthread_create(&tid, NULL, thread_func, NULL);
+    int32_t ret = pthread_create(&tid, NULL, ThreadFunc, NULL);
     if (ret != 0) {
         printf("pthread_create failed.");
         return -1;
@@ -45,9 +45,8 @@ int main(int argc, char *argv[])
         ret = pthread_cond_wait(&g_test.cond, &g_test.condLock);
         printf("pthread_cond_wait = %d\n", ret);
     }
+    printf("The resultCode is %d\n", g_test.resultCode);
     (void)pthread_mutex_unlock(&g_test.condLock);
-
-    (void)printf("The resultCode is %d\n", g_test.resultCode);
 
     (void)pthread_cond_destroy(&g_test.cond);
     (void)pthread_mutex_destroy(&g_test.condLock);

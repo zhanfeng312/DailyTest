@@ -65,14 +65,32 @@ static void TestBasicType(void)
 
 static void TestPrintf(void)
 {
-    int a = 3;
-    printf("[%3d]\n", a);
-    printf("[%03d]\n", a);
+    /*
+        %[flags][width][.precision][length]specifier
+        默认右对齐
+    */
+    int a = 1234;
+    printf("[%03d]\n", a); //前导0, 如果指定了-或精度，则忽略
     printf("[%-3d]\n", a);
+    printf("[%+3d]\n", a); //输出+ / -
+    printf("[% 3d]\n", -3); //输出值为正时加上空格，为负时加上负号
+
+    printf("[%5d]\n", a);
+    printf("[%*d]\n", 5, a); //宽度未通过format指定, *代表长度在后面通过常量指定
+
+    printf("**%5d**%5.3d**%05d**%.3d**\n", 6, 6, 6, 6); //前导0
 }
 
 static void TestScanf(void)
 {
+    // int a, b;
+    // printf("Please input two number:\n");
+    // int ret = scanf("%d%*c%d", &a, &b);
+    // printf("The ret is %d, a = %d, b = %d\n", ret, a, b);
+
+    char str[50];
+    scanf("%[^\n]",str); //到换行符为止
+    printf("%s\n",str);
     return;
 }
 
@@ -83,7 +101,7 @@ int main(void)
     // TestBasicType();
     // TestVarType();
     // TestPrintf();
-    // TestScanf();
+    TestScanf();
 
     return 0;
 }
