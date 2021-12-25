@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <sys/wait.h>
 #include <sys/types.h>
+#include <sys/syscall.h>
 
 void out_status(int status)
 {
@@ -21,17 +22,22 @@ void out_status(int status)
 int main(void)
 {
     int status;
-    pid_t pid;
-    if ((pid = fork()) < 0) {
+    pid_t pid = fork();
+    if (pid < 0) {
         perror("fork error");
         exit(1);
-    } else if (pid == 0) {
-        printf("pid: %d, ppid:%d\n", getpid(), getppid());
+    } else if (pid == 0) { //子进程
+        printf("child process: pid: %d, ppid:%d\n", getpid(), getppid());
         exit(3); //子进程终止运行
     }
+    printf("parent process: pid: %d\n", getpid());
+    printf("parent tid: %ld\n", syscall(__NR_gettid));
     //父进程调用wait函数阻塞，等待子进程结束并回收
     wait(&status);
     out_status(status);
+    (void)pause();
+
+#if 0
     printf("-------------------\n");
 
     if ((pid = fork()) < 0) {
@@ -63,6 +69,7 @@ int main(void)
     } while(pid == 0);
 
     //wait(&status);
+#endif
 
     out_status(status);
 }

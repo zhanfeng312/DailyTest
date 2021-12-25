@@ -2,52 +2,50 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
+#include <arpa/inet.h>
 
-static void TestStruct()
+typedef struct {
+    uint8_t a;
+    uint8_t b;
+} MyStruct;
+
+typedef struct {
+    uint8_t tagId;
+    uint16_t len;
+    char data[0];
+} VarStruct;
+
+typedef struct {
+    uint8_t a : 4;
+    uint8_t b : 5;
+} BitField;
+
+static void TestStruct(void)
 {
-    typedef struct {
-        uint8_t a;
-        uint8_t b;
-    } MyStruct;
-
     MyStruct myStruct;
     printf("&a = %p, &b = %p\n", &myStruct.a, &myStruct.b);
 }
 
-static void TestBitField()
+static void TestBitField(void)
 {
-    typedef struct {
-        uint8_t a : 4;
-        uint8_t b : 5;
-    } TestBitField;
+    printf("sizeof(BitField) = %ld\n", sizeof(BitField));
 
-    printf("sizeof(TestBitField) = %ld\n", sizeof(TestBitField));
+    BitField bitField;
+    const uint16_t num = 0x3244; //00110010 01000100  位域不能跨字节
 
-    TestBitField bitField;
-    const uint16_t num = 0x3244; //00110010 01000100
     (void)memcpy(&bitField, &num, sizeof(num));
-    printf("bitField.a = %d, bitField.b = %d\n", bitField.a, bitField.b);
+    printf("bitField.a = %d, bitField.b = %d\n", bitField.a, bitField.b); // 4 18
 }
 
 static void TestVarType(void)
 {
-    typedef struct {
-        uint8_t tagId;
-        uint16_t len;
-        char data[0];
-    } VarStruct1;
-
-    typedef struct {
-        uint8_t tagId;
-        uint16_t len;
-        char data[0];
-    } __attribute__((__packed__)) VarStruct2;
-
-    printf("sizeof(VarStruct1) = %ld, sizeof(VarStruct2) = %ld\n", sizeof(VarStruct1), sizeof(VarStruct2));
+    printf("sizeof(VarStruct1) = %ld\n", sizeof(VarStruct));
 }
 
 static void TestBasicType(void)
 {
+    int *pointer = NULL;
+    printf("sizeof(pointer) = %ld\n", sizeof(pointer));
     printf("sizeof(char) = %lu.\n", sizeof(char));
     printf("sizeof(short) = %lu.\n", sizeof(short));
     printf("sizeof(int) = %lu.\n", sizeof(int));
@@ -98,10 +96,10 @@ int main(void)
 {
     // TestStruct();
     // TestBitField();
-    // TestBasicType();
+    TestBasicType();
     // TestVarType();
     // TestPrintf();
-    TestScanf();
+    // TestScanf();
 
     return 0;
 }

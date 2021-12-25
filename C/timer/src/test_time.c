@@ -6,17 +6,14 @@
 static void GetTime1(void)
 {
 	time_t t1;
-	/* 两种方式 */
 	time(&t1); //返回UTC时间 自从1970年1月1号0时0点 到 现在的秒数
 	printf("Get the seconds from 1970 is %ld\n", t1);
-	printf("Transfer the local time is: %s", ctime(&t1)); //转换为当地时间，参数为：time_t指针
+	printf("Transfer the local time is: %s", ctime(&t1)); //转换为当地时间
+	printf("Transfer the local time is: %s", asctime(localtime(&t1)));
 
 	struct tm *area = localtime(&t1);
 	printf("Current time is[%04d-%02d-%02d %02d:%02d:%02d]\n", area->tm_year + 1900, area->tm_mon + 1,
-	       area->tm_mday, area->tm_hour, area->tm_min, area->tm_sec);
-	
-	struct tm *gmt = gmtime(&t1);
-	printf("GMT time is: %s", asctime(gmt));
+	        area->tm_mday, area->tm_hour, area->tm_min, area->tm_sec);
 }
 
 static void GetTime2(void)
@@ -41,9 +38,9 @@ int main(void)
 {
 	GetTime1();
 
-	GetTime2();
+	// GetTime2();
 
-	GetTime3();
+	// GetTime3();
 
 	return 0;
 }
