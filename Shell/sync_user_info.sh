@@ -1,6 +1,6 @@
 #!/bin/sh
 
-PASSWD_FILE_NAME="passwd"
+PASSWD_FILE_NAME="/etc/passwd"
 
 function sync_passwd_info()
 {
