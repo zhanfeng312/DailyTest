@@ -24,7 +24,7 @@
 
 #define nt_log(fmt, ...) \
     do { \
-        fprintf(stderr, "%s %d " fmt, __FUNCTION__, __LINE__,  ##__VA_ARGS__);\
+        fprintf(stderr, "%s %d " fmt, __FUNCTION__, __LINE__,  ##__VA_ARGS__); \
 } while (0)
 
 #define PROG_NAME "daemon"
@@ -147,9 +147,9 @@ static void sig_handle(int sig)
         case SIGTSTP:
         case SIGTERM:
         case SIGQUIT:
-        	if (g_debug) {
+            if (g_debug) {
         	    printf(PROG_NAME" end ...");
-        	}
+            }
             g_system_done = 1;
             break;
     }
