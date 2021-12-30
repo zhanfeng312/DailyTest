@@ -5,48 +5,37 @@
 int g_v[10];
 int *h_v = NULL;
 
+void Print(int *array, int arraySize)
+{
+    int i = 0;
+    for(; i < arraySize; i++) {
+        if (i == 0) {
+            printf("%d", array[i]);
+        } else {
+            printf(",%d", array[i]);
+        }
+    }
+    printf("\n");
+}
+
 void set(int val)
 {
     int a_v[10];
-    int i;
-    for(i = 0; i < 10; i++) {
+    int i = 0;
+    for(; i < 10; i++) {
         a_v[i] = val;
         g_v[i] = val;
         h_v[i] = val;
         sleep(1);
     }
     printf("g_v:");
-    i = 0;
-    for(; i < 10; i++) {
-        if (i == 0) {
-            printf("%d", g_v[i]);
-        } else {
-            printf(",%d", g_v[i]);
-        }
-    }
-    printf("\n");
+    Print(g_v, 10);
 
     printf("h_v:");
-    i = 0;
-    for(; i < 10; i++) {
-        if (i == 0) {
-            printf("%d", h_v[i]);
-        } else {
-            printf(",%d", h_v[i]);
-        }
-    }
-    printf("\n");
+    Print(h_v, 10);
 
     printf("a_v:");
-    i = 0;
-    for(; i < 10; i++) {
-        if (i == 0) {
-            printf("%d", a_v[i]);
-        } else {
-            printf(",%d", a_v[i]);
-        }
-    }
-    printf("\n");
+    Print(a_v, 10);
 }
 
 void sig_handler(int signo)
@@ -60,6 +49,7 @@ void sig_handler(int signo)
 
 int main(void)
 {
+    /* 当信号到达后, 当前的操作会被中断, 信号处理函数执行完，再返回上次的中断点继续执行 */
     if (signal(SIGTSTP, sig_handler) == SIG_ERR) {
         perror("signal sigtstp error");
     }

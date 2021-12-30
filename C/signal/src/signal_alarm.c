@@ -1,25 +1,17 @@
 #include <signal.h>
 #include <unistd.h>
 #include <stdio.h>
+#include <time.h>
 #include <stdlib.h>
-#include <math.h>
 
 void sig_handler(int signo)
 {
-    if (signo == SIGALRM) {
-        printf("clock time out\n");
-        //重新设置定时器(周期性的定时)
-        alarm(5);
-    }
-}
-
-void out_data(void)
-{
-    int i = 1;
-    while (i <= 20) {
-        double d = drand48();
-        printf("%-10d:%lf\n", i++, d);
-        sleep(1);
+    if (signo == SIGALRM) {
+        system("clear");
+        time_t t = time(NULL);
+        struct tm *timeInfo = localtime(&t);
+        printf("%02d:%02d:%02d\n", timeInfo->tm_hour, timeInfo->tm_min, timeInfo->tm_sec);
+        alarm(1);
     }
 }
 
@@ -29,12 +21,14 @@ int main(void)
         perror("signal sigalrm error");
     }
 
-    //设置定时器
-    alarm(5);
+    int ret = alarm(5);
+    ret = alarm(0);
+    printf("ret is %d\n", ret);
 
-    printf("begin main running\n");
-    out_data();
-    printf("end main running\n");
+    while (1) {
+        pause();
+    }
 
-    return 0;
+    return 0;
+
 }
