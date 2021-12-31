@@ -22,10 +22,9 @@ void term_fun3(void)
 
 int main(int argc, char *argv[])
 {
-    if (argc < 3){
-
+    if (argc < 3) {
         fprintf(stderr, "usage: %s file [exit|_exit|return]\n", argv[0]);
-        exit(1);
+        exit(-1);
     }
 
     //向内核登记终止函数
