@@ -68,15 +68,15 @@ static void TestPrintf(void)
         默认右对齐
     */
     int a = 1234;
-    printf("[%03d]\n", a); //前导0, 如果指定了-或精度，则忽略
-    printf("[%-3d]\n", a);
-    printf("[%+3d]\n", a); //输出+ / -
-    printf("[% 3d]\n", -3); //输出值为正时加上空格，为负时加上负号
-
-    printf("[%5d]\n", a);
+    printf("[%3d]\n", a); //最小宽度, 输出值字段长度比指定值大, 原样输出，不截断
+    printf("[%5d]\n", a); //输出值字段长度比指定值小, 结果用前导空格填充
+    printf("[%05d]\n", a); //前导0, 如果指定了-或精度，则忽略
+    printf("[%-5d]\n", a); //左对齐
+    printf("[%+5d]\n", a); //输出+/-
+    printf("[% 5d]\n", -3); //输出值为正时加上空格，为负时加上负号
     printf("[%*d]\n", 5, a); //宽度未通过format指定, *代表长度在后面通过常量指定
 
-    printf("**%5d**%5.3d**%05d**%.3d**\n", 6, 6, 6, 6); //前导0
+    printf("[%5d][%05d][%5.3d][%.3d]\n", 6, 6, 6, 6); //前导0
 }
 
 static void TestScanf(void)
@@ -96,10 +96,10 @@ int main(void)
 {
     // TestStruct();
     // TestBitField();
-    TestBasicType();
+    // TestBasicType();
     // TestVarType();
     // TestPrintf();
-    // TestScanf();
+    TestScanf();
 
     return 0;
 }
