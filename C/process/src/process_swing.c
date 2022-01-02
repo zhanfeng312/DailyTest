@@ -23,5 +23,6 @@ int main(void)
     } else {
         printf("I am parent\n");
     }
+    pause();
     return 0;
 }
