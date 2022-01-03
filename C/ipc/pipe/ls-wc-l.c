@@ -11,19 +11,17 @@ int main(void)
     int fd[2];
     pid_t pid;
 
-    int ret = pipe(fd); //创建管道并打开文件描述符
-    if (ret == -1) {
+    if ((pipe(fd)) == -1) { //创建管道并打开文件描述符
         perror("pipe error.");
         exit(1);
     }
-    pid = fork();
-    if (pid == -1) {
+    if ((pid = fork()) < 0) {
         perror("fork error.");
         exit(1);
     } else if (pid == 0) { //child process
         printf("I am child, pid = %u, ppid = %u\n", getpid(), getppid());
         close(fd[0]);
-        dup2(fd[1], STDOUT_FILENO);
+        dup2(fd[1], STDOUT_FILENO); //标准输出重定向到管道写端
         close(fd[1]);
         execlp("ls", "ls", NULL);
         exit(1);
