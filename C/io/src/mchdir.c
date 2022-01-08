@@ -7,7 +7,7 @@
 int main(int argc, char *argv[])
 {
     if (argc < 2) {
-        fprintf(stderr, "usage: %s\n", argv[0]);
+        fprintf(stderr, "usage: %s dir\n", argv[0]);
         exit(1);
     }
 

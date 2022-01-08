@@ -1,8 +1,8 @@
+#include <stdio.h>
+#include "io.h"
 #include <fcntl.h>
 #include <stdlib.h>
 #include <string.h>
-#include <unistd.h>
-#include <stdio.h>
 
 int main(int argc, char *argv[])
 {
@@ -18,7 +18,7 @@ int main(int argc, char *argv[])
     }
 
     //设置追加的文件状态标志
-    set_fl(fd, O_APPEND);
+    SetFileStatusFlag(fd, O_APPEND);
 
     // int fd = open(argv[2], O_WRONLY | O_APPEND);
     // if (fd < 0) {
@@ -29,15 +29,12 @@ int main(int argc, char *argv[])
     //定位到文件尾部，添加了O_APPEND选项就不用lseek了
     //lseek(fd, 0L, SEEK_END);
 
-    sleep(10);
-
     //往文件尾部追加内容
     size_t size = strlen(argv[1]) * sizeof(char);
     if (write(fd, argv[1], size) != size) {
         perror("write error");
         exit(1);
     }
-
     close(fd);
 
     return 0;

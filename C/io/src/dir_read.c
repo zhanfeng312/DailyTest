@@ -17,7 +17,7 @@ int main(int argc, char *argv[])
     }
     //判断是否为目录
     if (!S_ISDIR(buff.st_mode)) {
-        fprintf(stderr, "%s is not dir", argv[1]);
+        fprintf(stderr, "%s is not dir\n", argv[1]);
         exit(1);
     }
 
@@ -26,7 +26,11 @@ int main(int argc, char *argv[])
     //读取目录内的信息
     struct dirent *ent;
     while ((ent = readdir(dir)) != NULL) {
-        printf("%-20s %10ld\n", ent->d_name, ent->d_ino);
+        if ((strcmp(ent->d_name, ".") == 0) || (strcmp(ent->d_name, "..") == 0)) {
+            continue;
+        } else {
+            printf("%-20s %10ld\n", ent->d_name, ent->d_ino);
+        }
     }
     closedir(dir);
 
