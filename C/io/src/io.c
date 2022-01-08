@@ -2,13 +2,12 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <errno.h>
-#include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
 
-#define BUFFER_LEN   1024
+#define BUFFER_LEN 1024
 
-void copy(int fdin, int fdout)
+void Copy(int fdin, int fdout)
 {
     char buffer[BUFFER_LEN];
     ssize_t size;
@@ -19,18 +18,18 @@ void copy(int fdin, int fdout)
     lseek(fdin, 0L, SEEK_SET);
     while ((size = read(fdin, buffer, BUFFER_LEN)) > 0) {
         if (write(fdout, buffer, size) != size) {
-            fprintf(stderr, "write error: %s\n", strerror(errno));
+            perror("write error\n");
             exit(1);
         }
     }
 
     if (size < 0) {
-        fprintf(stderr, "read error: %s\n", strerror(errno));
+        perror("read error\n");
         exit(1); //return 1 非零表示异常
     }
 }
 
-void set_fl(int fd, int flag)
+void SetFileStatusFlag(int fd, int flag)
 {
     //获得原来的文件状态标志
     int val = fcntl(fd, F_GETFL);
@@ -42,7 +41,7 @@ void set_fl(int fd, int flag)
     }
 }
 
-void clr_fl(int fd, int flag)
+void ClearFileStatusFlag(int fd, int flag)
 {
     //获得原来的文件状态标志
     int val = fcntl(fd, F_GETFL);

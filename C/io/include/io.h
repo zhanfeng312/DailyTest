@@ -1,10 +1,10 @@
 #ifndef __IO_H__
 #define __IO_H__
 
-extern void copy(int fdin, int fdout);
+extern void Copy(int fdIn, int fdOut);
 
-extern void set_fl(int fd, int flag);
+extern void SetFileStatusFlag(int fd, int flag);
 
-extern void clr_fl(int fd, int flag);
+extern void ClearFileStatusFlag(int fd, int flag);
 
 #endif //__IO_H__
