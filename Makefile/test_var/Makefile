@@ -1,5 +1,0 @@
-SUBDIR=src example
-all:
-	@for subdir in $(SUBDIR); do \
-		echo "building" $$subdir;\
-	done

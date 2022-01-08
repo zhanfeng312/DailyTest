@@ -1,0 +1,14 @@
+ALL:a.out
+
+obj/main.o:src/main.c
+	gcc -c src/main.c -o obj/main.o -Iinc
+obj/cal.o:src/cal.c
+	gcc -c src/cal.c -o obj/cal.o -Iinc
+
+a.out:obj/main.o obj/cal.o
+	gcc obj/main.o obj/cal.o -o a.out
+
+clean:
+	rm -rf obj/main.o obj/cal.o a.out
+
+.PHONY: clean

@@ -1,0 +1,6 @@
+#wildcard: 该函数是通配符函数，通过它可以得到当前工作目录中满足_pattern模式的文件或目录名列表
+#用法: $(wildcard _pattern)
+SRC = $(wildcard *.c)
+
+all:
+	@echo $(SRC)

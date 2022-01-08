@@ -1,12 +1,3 @@
-#wildcard: 该函数是通配符函数，通过它可以得到当前工作目录中满足_pattern模式的文件或目录名列表
-#用法: $(wildcard _pattern)
-SRCS = $(wildcard *.c) $(wildcard sub/*.c)
-
-#patsubst: 该函数用于将名字列表_text中符合_pattern模式的名字替换为_replacement，并将替换后的名字列表返回
-#用法：$(patsubst _pattern, _replacement, _text)
-mixed = foo.c bar.c main.o
-objects = $(patsubst %.c, %.o, $(mixed))
-
 #strip: 用于清除名字列表中的多余空格
 #用法：$(strip _string)
 original =      foo.c           bar.c 
@@ -48,8 +39,6 @@ file_name := $(notdir code/foo/src/foo.c code/bar/src/bar.c)
 #ROOT := $(realpath ./..)
 
 all:
-	@echo $(SRCS)
-	@echo $(objects)
 	@echo $(stripped)
 	@echo $(with_dir)
 	@echo $(with_suffix)
