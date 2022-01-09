@@ -10,7 +10,8 @@ int main(void)
     flag |= O_NONBLOCK;
     fcntl(STDIN_FILENO, F_SETFL, flag);
 
-    while (1) {
+    int i = 0;
+    for (; i < 5; i++) {
         char buf[512] = {0};
         ssize_t size = read(STDIN_FILENO, buf, sizeof(buf));
         if (size < 0) {

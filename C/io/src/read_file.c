@@ -5,14 +5,14 @@
 
 int main(void)
 {
-	char buf[128] = {0};
-	int fd = open("a.txt", O_RDONLY);
+	int fd = open("a.txt", O_RDWR | O_CREAT, 0644);
 	if (fd == -1) {
 		perror("open errorn");
 		exit(1);
 	}
 
 	while (1) {
+		char buf[128] = {0};
 		ssize_t size = read(fd, buf, sizeof(buf));
 		if (size < 0) {
 			perror("read error.");
