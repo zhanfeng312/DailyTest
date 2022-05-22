@@ -1,6 +1,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <arpa/inet.h>
 
@@ -14,6 +15,11 @@ typedef struct {
     uint16_t len;
     char data[0];
 } VarStruct;
+
+typedef struct {
+    int32_t num;
+    char *name[0];
+} VarStruct2;
 
 typedef struct {
     uint8_t a : 4;
@@ -39,7 +45,16 @@ static void TestBitField(void)
 
 static void TestVarType(void)
 {
-    printf("sizeof(VarStruct1) = %ld\n", sizeof(VarStruct));
+    printf("sizeof(VarStruct1) = %lu\n", sizeof(VarStruct));
+
+    printf("sizeof(VarStruct2) = %lu\n", sizeof(VarStruct2)); //8
+
+    VarStruct2 varStruct; //char *name[0]
+    printf("name = %p, name[0] = %p\n", varStruct.name, varStruct.name[0]);
+    //name = 0x7fff6e1e12f8, name[0] = 0x4005d0
+
+    varStruct.name[0] = "111";
+    printf("%s\n", varStruct.name[0]);
 }
 
 static void TestBasicType(void)
@@ -97,9 +112,10 @@ int main(void)
     // TestStruct();
     // TestBitField();
     // TestBasicType();
-    // TestVarType();
+    TestVarType();
     // TestPrintf();
-    TestScanf();
+    // TestScanf();
+
 
     return 0;
 }
