@@ -130,7 +130,7 @@ void out_addr(struct sockaddr_in *clientaddr)
 int main(int argc, char *argv[])
 {
     if (argc < 2){
-        
+
         printf("usage: %s port\n", argv[0]);
         exit(1);
     }
@@ -162,7 +162,7 @@ int main(int argc, char *argv[])
     serveraddr.sin_family = AF_INET; //IPV4
     serveraddr.sin_port = htons(atoi(argv[1]));//port
     serveraddr.sin_addr.s_addr = INADDR_ANY;
-    if (bind(sockfd, (struct sockaddr*)&serveraddr, sizeof(serveraddr)) < 0){        
+    if (bind(sockfd, (struct sockaddr*)&serveraddr, sizeof(serveraddr)) < 0){
         perror("bind error");
         exit(1);
     }
