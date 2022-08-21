@@ -24,7 +24,10 @@ int main(void)
            printf("%s", buf);
        }
     }
-    pclose(fp);
-    
+    int status = pclose(fp);
+    printf("status is %d\n", status);
+    if (WIFEXITED(status)) {
+        printf("%d\n", WEXITSTATUS(status));
+    }
     return 0;
 }
